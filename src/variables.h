@@ -1,13 +1,13 @@
 #ifndef VARIABLES_H
 #define VARIABLES_H
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include <stdbool.h>
 #include <stdint.h>
 #include <graphx.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 // these are the player's variables and many states of existence
 extern float playerX;

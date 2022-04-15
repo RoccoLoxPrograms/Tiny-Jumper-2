@@ -1,11 +1,11 @@
 #ifndef ENGINE_H
 #define ENGINE_H
 
+#include <stdint.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-#include <stdint.h>
 
 void drawPlayerAndTime(int, uint8_t);
 void endOfFrame(void);
