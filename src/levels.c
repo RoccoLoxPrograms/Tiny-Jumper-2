@@ -214,12 +214,32 @@ void level5(void) {
 }
 
 void level6(void) {
-  levelSetup(5, 227);
+  levelSetup(5, 127);
+  gfx_FillRectangle_NoClip(0, 135, 80, 5);
+  gfx_FillRectangle_NoClip(250, 115, 70, 5);
+  gfx_FillRectangle_NoClip(0, 95, 60, 5);
+  gfx_FillRectangle_NoClip(260, 75, 60, 5);
+  gfx_FillRectangle_NoClip(0, 55, 40, 5);
+  gfx_SetColor(43);
+  gfx_FillRectangle_NoClip(215, 120, 8, 20);
+  gfx_FillRectangle_NoClip(151, 75, 8, 20);
+  gfx_FillRectangle_NoClip(87, 30, 8, 20);
   gfx_BlitScreen();
   gfx_SetDrawBuffer();
   while (!dead && !quit && !goal) {
     player();
+    rectPlatform(0, 135, 80, 5);
+    rectPlatform(250, 115, 70, 5);
+    rectPlatform(0, 95, 60, 5);
+    rectPlatform(260, 75, 60, 5);
+    rectPlatform(0, 55, 40, 5);
     rectPlatform(0, 235, 320, 5);
+    spike(215, 120, 8, 20);
+    spike(151, 75, 8, 20);
+    spike(87, 30, 8, 20);
+    antiGravity(0, 140, 320, 95);
+    playerAntiGravity = anyAntiGravity;
+    endGoal(8, 39);
     drawPlayerAndTime(1, 1);
     endOfFrame();
   }

@@ -2,6 +2,7 @@
 #include "gfx/sprites.h"
 #include "variables.h"
 #include "engine.h"
+#include "asm/invert.h"
 
 #include <tice.h>
 #include <keypadc.h>
@@ -34,13 +35,13 @@ static void settingsSwitch(unsigned int x, uint8_t y, bool turnedOn) {
 }
 
 static void confirmReset(void) {
-  gfx_Rectangle_NoClip(211, 149, 19, 11);
+  gfx_Rectangle_NoClip(211, 179, 19, 11);
   bool keyPressed = false;
   int selectorX = 211;
   uint8_t selectorWidth = 19;
   gfx_SetColor(5);
-  gfx_Rectangle_NoClip(198, 138, 82, 11);
-  gfx_PrintStringXY("NO     YES", 213, 151);
+  gfx_Rectangle_NoClip(198, 168, 82, 11);
+  gfx_PrintStringXY("NO     YES", 213, 181);
   while (kb_AnyKey());
   while (!kb_IsDown(kb_KeyClear) && !kb_IsDown(kb_KeyEnter) && !kb_IsDown(kb_Key2nd)) {
     kb_Scan();
@@ -54,7 +55,7 @@ static void confirmReset(void) {
     if (kb_Data[7] && !keyPressed) {
       keyPressed = true;
       gfx_SetColor(5);
-      gfx_Rectangle_NoClip(selectorX, 149, selectorWidth, 11);
+      gfx_Rectangle_NoClip(selectorX, 179, selectorWidth, 11);
       switch (kb_Data[7]) {
         case kb_Left:
           selectorX -= 31;
@@ -76,13 +77,13 @@ static void confirmReset(void) {
           break;
       }
       gfx_SetColor(21);
-      gfx_Rectangle_NoClip(selectorX, 149, selectorWidth, 11);
+      gfx_Rectangle_NoClip(selectorX, 179, selectorWidth, 11);
     }
   }
   gfx_SetColor(5);
-  gfx_FillRectangle_NoClip(211, 149, 58, 11);
+  gfx_FillRectangle_NoClip(211, 179, 58, 11);
   gfx_SetColor(21);
-  gfx_Rectangle_NoClip(198, 138, 82, 11);
+  gfx_Rectangle_NoClip(198, 168, 82, 11);
   while (kb_AnyKey());
 }
 
@@ -352,22 +353,28 @@ void options(void) {
   gfx_SetTextBGColor(5);
   gfx_SetTextFGColor(255);
   gfx_PrintStringXY("Tiny Jumper 2.0     (c) 2022 RoccoLox Programs", 8, 231);
-  if (golds > 14) gfx_PrintStringXY("Custom Design", 33, 199);
   gfx_PrintStringXY("Customize Player", 23, 215);
   gfx_PrintStringXY("Disable death", 193, 60);
   gfx_PrintStringXY("messages", 193, 70);
-  gfx_PrintStringXY("Invinciblity Mode", 193, 90);
-  gfx_PrintStringXY("(Times aren't saved)", 172, 102);
-  if (golds > 14) gfx_PrintStringXY("Speedrunner Mode", 193, 120);
-  gfx_PrintStringXY("Reset Times", 200, 140);
+  gfx_PrintStringXY("Invert Colors", 192, 90);
+  gfx_PrintStringXY("Invinciblity Mode", 192, 120);
+  gfx_PrintStringXY("(Times aren't saved)", 172, 132);
+  gfx_PrintStringXY("Reset Times", 200, 170);
+  if (golds > 14) {
+    gfx_PrintStringXY("Custom Design", 33, 199);
+    gfx_PrintStringXY("Speedrunner Mode", 193, 150);
+    settingsSwitch(170, 150, speedrunnerMode);
+  }
   gfx_SetTextFGColor(183);
   gfx_PrintStringXY("Your Player", 41, 44);
   gfx_PrintStringXY("Game Settings", 193, 44);
   gfx_PrintStringXY("Total gold times: ", 96, 29);
   gfx_PrintInt(golds, 2);
-  gfx_SetTextFGColor(7);
-  gfx_PrintStringXY("Originally created", 177, 190);
-  gfx_PrintStringXY("by KRoD", 215, 200);
+  if (golds > 14) {
+    gfx_SetTextFGColor(7);
+    gfx_PrintStringXY("Originally created", 177, 200);
+    gfx_PrintStringXY("by KRoD", 215, 210);
+  }
   PrintCenteredText("Options", 5, 183);
   gfx_SetColor(255);
   gfx_HorizLine_NoClip(5, 229, 311);
@@ -406,8 +413,8 @@ void options(void) {
     }
   }
   settingsSwitch(170, 60, tinyJumperData[81]);
-  settingsSwitch(170, 90, invincibleMode);
-  if (golds > 14) settingsSwitch(170, 120, speedrunnerMode);
+  settingsSwitch(170, 90, tinyJumperData[82]);
+  settingsSwitch(170, 120, invincibleMode);
   gfx_SetTextFGColor(255);
   gfx_SetColor(21);
   gfx_Rectangle_NoClip(selectorX, selectorY, selectorWidth, selectorHeight);
@@ -421,20 +428,35 @@ void options(void) {
     if (kb_IsDown(kb_KeyClear) || kb_IsDown(kb_KeyMode)) quit = true;
     if ((kb_IsDown(kb_KeyEnter) || kb_IsDown(kb_Key2nd)) && !keyPressed) {
       keyPressed = true;
-      if (selectorY == 58) {
-        tinyJumperData[81] = !tinyJumperData[81];
-        settingsSwitch(selectorX + 2, selectorY + 2, tinyJumperData[81]);
+      switch (selectorY) {
+        case 58:
+          tinyJumperData[81] = !tinyJumperData[81];
+          settingsSwitch(selectorX + 2, selectorY + 2, tinyJumperData[81]);
+          break;
+        case 88:
+          tinyJumperData[82] = !tinyJumperData[82];
+          invertPalette();
+          settingsSwitch(selectorX + 2, selectorY + 2, tinyJumperData[82]);
+          break;
+        case 118:
+          invincibleMode = !invincibleMode;
+          settingsSwitch(selectorX + 2, selectorY + 2, invincibleMode);
+          break;
+        case 148:
+          speedrunnerMode = !speedrunnerMode;
+          settingsSwitch(selectorX + 2, selectorY + 2, speedrunnerMode);
+          break;
+        case 168:
+          confirmReset();
+          break;
+        case 213:
+          if (golds > 4) {
+            customizePlayer();
+          }
+          break;
+        default:
+          break;
       }
-      if (selectorY == 88) {
-        invincibleMode = !invincibleMode;
-        settingsSwitch(selectorX + 2, selectorY + 2, invincibleMode);
-      }
-      if (selectorY == 118) {
-        speedrunnerMode = !speedrunnerMode;
-        settingsSwitch(selectorX + 2, selectorY + 2, speedrunnerMode);
-      }
-      if (selectorY == 138) confirmReset();
-      if (selectorY == 213 && golds > 4) customizePlayer();
     }
     if (kb_Data[7] && (!keyPressed || timer_Get(1) > 3000)) {
       if (!(kb_IsDown(kb_KeyLeft) && selectorX == 21) && !(kb_IsDown(kb_KeyRight) && selectorX == 168)) {
@@ -459,10 +481,10 @@ void options(void) {
         case kb_Up:
           if (selectorX != 21) {
             selectorY -= 30;
-            if (selectorY == 108 && golds < 15) selectorY = 88;
-            if (selectorY == 108) selectorY = 118;
-            if (selectorY == 28) selectorY = 138;
-            if (selectorY == 138) {
+            if (selectorY == 138 && golds < 15) selectorY = 118;
+            if (selectorY == 138) selectorY = 148;
+            if (selectorY == 28) selectorY = 168;
+            if (selectorY == 168) {
               selectorX = 198;
               selectorWidth = 82;
               selectorHeight = 11;
@@ -476,10 +498,10 @@ void options(void) {
         case kb_Down:
           if (selectorX != 21) {
             selectorY += 30;
-            if (selectorY == 118 && golds < 15) selectorY = 138;
-            if (selectorY == 148) selectorY = 138;
-            if (selectorY == 168) selectorY = 58;
-            if (selectorY == 138) {
+            if (selectorY == 148 && golds < 15) selectorY = 168;
+            if (selectorY == 178) selectorY = 168;
+            if (selectorY == 198) selectorY = 58;
+            if (selectorY == 168) {
               selectorX = 198;
               selectorWidth = 82;
               selectorHeight = 11;

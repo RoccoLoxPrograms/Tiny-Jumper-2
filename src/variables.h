@@ -33,7 +33,7 @@ extern bool goal;
 extern uint8_t level;
 extern uint8_t levelX;
 extern uint8_t levelY;
-extern unsigned int tinyJumperData[82];
+extern unsigned int tinyJumperData[83];
 extern uint8_t golds;
 extern uint8_t goalColor;
 

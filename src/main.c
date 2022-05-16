@@ -4,6 +4,7 @@
 #include "engine.h"
 #include "levels.h"
 #include "options.h"
+#include "asm/invert.h"
 
 #include <tice.h>
 #include <keypadc.h>
@@ -28,14 +29,14 @@ gfx_sprite_t *playerSprites[7];
 unsigned int timer;
 
 char strTemp[10];
-uint8_t prevDeathMsg = 21;
+uint8_t prevDeathMsg = 11;
 bool dead = false;
 bool quit = false;
 bool goal = false;
 uint8_t level = 0;
 uint8_t levelX = 1;
 uint8_t levelY = 0;
-unsigned int tinyJumperData[82];
+unsigned int tinyJumperData[83];
 uint8_t golds = 0;
 uint8_t goalColor = 20;
 
@@ -191,14 +192,16 @@ int main(void) {
   if (!tinyDataSlot) {
     resetData();
   } else {
-    ti_Read(&tinyJumperData, 246, 1, tinyDataSlot);
+    ti_Read(&tinyJumperData, 249, 1, tinyDataSlot);
   }
   gfx_Begin();
   fontlib_SetFont(TJFont, 0);
   fontlib_SetTransparency(true);
   gfx_SetTransparentColor(79);
   gfx_SetPalette(global_palette, sizeof_global_palette, 0);
-
+  if (tinyJumperData[82] == 1) {
+    invertPalette();
+  }
   gfx_UninitedSprite(Custom, 8, 8);
   Custom->height = 8;
   Custom->width = 8;
@@ -217,10 +220,9 @@ int main(void) {
   playerSprites[4] = MushroomSkin;
   playerSprites[5] = RoccoLoxSkin;
   playerSprites[6] = Flipped;
-
   timer_Enable(1, TIMER_32K, TIMER_NOINT, TIMER_UP);
   rtc_Enable(RTC_SEC_INT);
-  srand(rtc_Time());
+  srandom(rtc_Time());
   while (!quit) {
     playerXVelocity = 0;
     playerYVelocity = 1;
@@ -289,7 +291,7 @@ int main(void) {
   }
   gfx_End();
   tinyDataSlot = ti_Open("TJ2Data", "w+");
-  ti_Write(&tinyJumperData, 246, 1, tinyDataSlot);
+  ti_Write(&tinyJumperData, 249, 1, tinyDataSlot);
   ti_SetArchiveStatus(true, tinyDataSlot);
   return 0;
 }

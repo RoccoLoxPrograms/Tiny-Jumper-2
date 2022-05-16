@@ -49,6 +49,7 @@ void resetData(void) {
   }
   tinyJumperData[16] = 21;
   tinyJumperData[81] = 0;
+  tinyJumperData[82] = 0;
 }
 
 // converts a float to a string
@@ -90,7 +91,7 @@ void spike(float x, float y, float width, float height) {
 
 // the looks and collision for the end goal
 void endGoal(float x, float y) {
-  if (playerX + 8 > x && playerX < x + 16 && playerY + 8 > y && playerY < y + 16) goal = true;
+  if (gfx_CheckRectangleHotspot(playerX, playerY, 8, 8, x, y, 16, 16)) goal = true;
   // this controls how the goal's colors change
   goalColor -= timer % 2;
   for (uint8_t rectOffset = 0; rectOffset < 4; rectOffset++) {
@@ -174,87 +175,117 @@ void player(void) {
 void deadScreen(void) {
   gfx_SetDrawScreen();
   gfx_ZeroScreen();
-  uint8_t randMsg = randInt(0, 500);
-  uint8_t randDeathMsg = 21;
+  uint8_t randDeathMsg = 22;
   // picks a random variable that is different from the previous random variable
-  if (randMsg != 0) {
+  if (randInt(0, 500)) {
     do {
-      randDeathMsg = randInt(0, 6);
+      randDeathMsg = randInt(0, 21);
     } while (randDeathMsg == prevDeathMsg);
   }
   prevDeathMsg = randDeathMsg;
   // the infamous death messages
   if (tinyJumperData[81] == 0) {
-    if (!randDeathMsg) PrintCenteredText("Ouch. You died.", 70, 255);
-    if (randDeathMsg == 1) {
-      PrintCenteredText("That looked like", 70, 255);
-      PrintCenteredText("it hurt.", 92, 255);
+    switch (randDeathMsg) {
+      case 0:
+        PrintCenteredText("Ouch. You died.", 70, 255);
+        break;
+      case 1:
+        PrintCenteredText("That looked like", 70, 255);
+        PrintCenteredText("it hurt.", 92, 255);
+        break;
+      case 2:
+        PrintCenteredText("Tu es mort...", 70, 255);
+        PrintCenteredText("encore.", 92, 255);
+        break;
+      case 3:
+        PrintCenteredText("That death...", 70, 255);
+        PrintCenteredText("was glorious.", 92, 255);
+        break;
+      case 4:
+        PrintCenteredText("Estas muerto...", 70, 255);
+        PrintCenteredText("de nuevo.", 92, 255);
+        break;
+      case 5:
+        PrintCenteredText("Were you", 70, 255);
+        PrintCenteredText("even trying?", 92, 255);
+        break;
+      case 6:
+        PrintCenteredText("#$&...*+", 70, 255); // displays japanese characters for "shinda...mata"
+        break;
+      case 7:
+        PrintCenteredText("Don't die!", 70, 255);
+        PrintCenteredText("Oops, too late.", 92, 255);
+        break;
+      case 8:
+        PrintCenteredText("So disappointing.", 70, 255);
+        break;
+      case 9:
+        PrintCenteredText("You died.", 70, 255);
+        PrintCenteredText("But it was", 92, 255);
+        PrintCenteredText("just a dream.", 114, 255);
+        break;
+      case 10:
+        PrintCenteredText("You could've died", 70, 255);
+        PrintCenteredText("better than that.", 92, 255);
+        break;
+      case 11:
+        PrintCenteredText("I'm getting a", 70, 255);
+        PrintCenteredText("bit tired of", 92, 255);
+        PrintCenteredText("respawning you.", 114, 255);
+        break;
+      case 12:
+        PrintCenteredText("Why would you go", 70, 255);
+        PrintCenteredText("and die like that?", 92, 255); 
+        break;
+      case 13:
+        PrintCenteredText("Have you given up?", 70, 255);
+        break;
+      case 14:
+        PrintCenteredText("Somebody in", 70, 255);
+        PrintCenteredText("this vicinity", 92, 255);
+        PrintCenteredText("died recently.", 114, 255);
+        break;
+      case 15:
+        PrintCenteredText("That death will be", 70, 255);
+        PrintCenteredText("our little secret.", 92, 255);
+        break;
+      case 16:
+        PrintCenteredText("Could you do", 70, 255);
+        PrintCenteredText("that again?", 92, 255);
+        PrintCenteredText("I wasn't looking.", 114, 255);
+        break;
+      case 17:
+        PrintCenteredText("You're deader", 70, 255);
+        PrintCenteredText("than my", 92, 255);
+        PrintCenteredText("childhood dog.", 114, 255);
+        break;
+      case 18:
+        PrintCenteredText("You meant to do", 70, 255);
+        PrintCenteredText("that, didn't you?", 92, 255);
+        break;
+      case 19:
+        PrintCenteredText("M4n that de4th", 70, 255);
+        PrintCenteredText("wuz stoopid. C4n u", 92, 255);
+        PrintCenteredText("even re4d this?", 114, 255);
+        msleep(200);
+        break;
+      case 20:
+        PrintCenteredText("I wonder if people", 70, 255);
+        PrintCenteredText("even read these.", 92, 255);
+        break;
+      case 21:
+        PrintCenteredText("Dying is for", 70, 255);
+        PrintCenteredText("noobs (get pwned!)", 92, 255);
+        break;
+      default:
+        PrintCenteredText("More dark humor.", 70, 51);
+        PrintCenteredText("A real nugget!", 92, 51);
+        msleep(500);
+        break;
     }
-    if (randDeathMsg == 2) {
-      PrintCenteredText("Tu es mort...", 70, 255);
-      PrintCenteredText("encore.", 92, 255);
-    }
-    if (randDeathMsg == 3) {
-      PrintCenteredText("That death...", 70, 255);
-      PrintCenteredText("was glorious.", 92, 255);
-    }
-    if (randDeathMsg == 4) {
-      PrintCenteredText("Estas muerto...", 70, 255);
-      PrintCenteredText("de nuevo.", 92, 255);
-    }
-    if (randDeathMsg == 5) {
-      PrintCenteredText("Were you", 70, 255);
-      PrintCenteredText("even trying?", 92, 255);
-    }
-    if (randDeathMsg == 6) PrintCenteredText("#$&...*+", 70, 255); // displays japanese characters for "shinda...mata"
-  /*if (randDeathMsg == 2) {
-    gfx_PrintStringXY("If you were playing a", 18, 50);
-    gfx_PrintStringXY("different game, that", 20, 70);
-    gfx_PrintStringXY("would've cost a life.", 25, 90);
-    delay(500);
+    msleep(1000);
   }
-  if (randDeathMsg == 3) gfx_PrintStringXY("You died and stuff.", 32, 70);
-  if (randDeathMsg == 4) {
-    gfx_PrintStringXY("You appear to have", 32, 60);
-    gfx_PrintStringXY("died or something.", 38, 80);
-  }
-  if (randDeathMsg == 5) {
-    gfx_PrintStringXY("Seriously? THAT'S how", 12, 60);
-    gfx_PrintStringXY("you died?", 97, 80);
-  }
-  if (randDeathMsg == 7) {
-    gfx_PrintStringXY("You died.", 101, 60);
-    gfx_PrintStringXY("How surprising.", 56, 80);
-  }
-  if (randDeathMsg == 8) {
-    gfx_PrintStringXY("Congratulations! You", 17, 60);
-    gfx_PrintStringXY("have died!!!", 84, 80);
-  }
-  if (randDeathMsg == 9) gfx_PrintStringXY("Should I call a doctor?", 7, 70);
-  if (randDeathMsg == 10) {
-    gfx_PrintStringXY("Maybe next time you", 28, 60);
-    gfx_PrintStringXY("should try NOT dying.", 19, 80);
-  }
-  if (randDeathMsg == 11) {
-    gfx_PrintStringXY("I'm getting a bit tired", 12, 60);
-    gfx_PrintStringXY("of respawning you.", 34, 80);
-  }
-  if (randDeathMsg == 14) {
-    gfx_PrintStringXY("Forsooth! Thou hast", 24, 60);
-    gfx_PrintStringXY("died and whatnot.", 44, 80);
-  }
-  if (randDeathMsg == 16) {
-    gfx_PrintStringXY("We regret to announce:", 6, 60);
-    gfx_PrintStringXY("you are died", 74, 80);
-  }*/
-    if (randDeathMsg == 21) {
-      PrintCenteredText("More dark humor.", 70, 51);
-      PrintCenteredText("A real nugget!", 92, 51);
-      delay(500);
-    }
-    delay(1000);
-  }
-  delay(200);
+  msleep(200);
   kb_Scan();
   dead = false;
   goal = false;
