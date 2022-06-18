@@ -26,3 +26,7 @@ include $(shell cedev-config --makefile)
 $(FONT_INC): $(FONT)
 	$(Q)$(call MKDIR,$(@D))
 	$(Q)convfont -o carray -f $< -a 1 -b 1 -w bold -c 2 -x 9 -l 0x0B -Z $@
+
+final:
+	make
+	convbin -r -e zx0 -k 8xp-compressed -u -n $(NAME) -i bin/$(NAME).bin -o bin/$(NAME).8xp

@@ -10,9 +10,15 @@
 
 // this function gets called at the end of every frame
 void drawPlayerAndTime(int stringXpos, uint8_t stringYpos) {
-  if (playerX < 0) playerX = 0;     // if the player hits the edge of the screen, then they stop
-  if (playerX > 312) playerX = 312; // if the player hits the other edge of the screen, then they stop
-  if (playerY < 0) playerY = 0;     // if the player hits the top, they stop
+  if (playerX < 0) {
+    playerX = 0;     // if the player hits the edge of the screen, then they stop
+  }
+  if (playerX > 312) {
+    playerX = 312; // if the player hits the other edge of the screen, then they stop
+  }
+  if (playerY < 0) {
+    playerY = 0;     // if the player hits the top, they stop
+  }
   if (playerY > 232) {              // if the player is on the bottom of the screen, then they stop
     playerY = 232;
     playerYVelocity = 0;
@@ -24,13 +30,18 @@ void drawPlayerAndTime(int stringXpos, uint8_t stringYpos) {
     gfx_SetColor(tinyJumperData[16]);
     gfx_FillRectangle_NoClip(playerX, playerY, 8, 8);
   } else if (tinyJumperData[16] > 255) {
-    if (playerAntiGravity) gfx_TransparentSprite_NoClip(playerSprites[6], playerX, playerY);
-    else gfx_TransparentSprite_NoClip(playerSprites[tinyJumperData[16] - 256], playerX, playerY);
+    if (playerAntiGravity) {
+      gfx_TransparentSprite_NoClip(playerSprites[6], playerX, playerY);
+    } else {
+      gfx_TransparentSprite_NoClip(playerSprites[tinyJumperData[16] - 256], playerX, playerY);
+    }
   }
   gfx_SetTextFGColor(255);
   gfx_SetTextBGColor(5);
   gfx_PrintStringXY(strTemp, stringXpos, stringYpos);
-  if (gfx_CheckRectangleHotspot(playerX, playerY, 8, 8, stringXpos, stringYpos, 36, 10)) gfx_PrintStringXY(strTemp, stringXpos, stringYpos + 10);
+  if (gfx_CheckRectangleHotspot(playerX, playerY, 8, 8, stringXpos, stringYpos, 36, 10)) {
+    gfx_PrintStringXY(strTemp, stringXpos, stringYpos + 10);
+  }
 }
 
 void endOfFrame(void) {
@@ -50,6 +61,7 @@ void resetData(void) {
   tinyJumperData[16] = 21;
   tinyJumperData[81] = 0;
   tinyJumperData[82] = 0;
+  tinyJumperData[83] = 0;
 }
 
 // converts a float to a string
@@ -86,7 +98,9 @@ void rectPlatform(float x, float y, float width, float height) {
 
 // the collision for the spikes (and by extension, the lava) 
 void spike(float x, float y, float width, float height) {
-  if (gfx_CheckRectangleHotspot(x, y, width, height, playerX, playerY, 8, 8)) dead = !invincibleMode; // the player only dies if they have invincible mode off
+  if (gfx_CheckRectangleHotspot(x, y, width, height, playerX, playerY, 8, 8)) {
+    dead = !invincibleMode; // the player only dies if they have invincible mode off
+  }
 }
 
 // the looks and collision for the end goal
@@ -95,7 +109,9 @@ void endGoal(float x, float y) {
   // this controls how the goal's colors change
   goalColor -= timer % 2;
   for (uint8_t rectOffset = 0; rectOffset < 4; rectOffset++) {
-    if (goalColor > 23) goalColor = 20;
+    if (goalColor > 23) {
+      goalColor = 20;
+    }
     gfx_SetColor(goalColor);
     gfx_FillRectangle_NoClip(x + 2 * rectOffset, y + 2 * rectOffset, 16 - 4 * rectOffset, 16 - 4 * rectOffset);
     goalColor++;
@@ -105,7 +121,9 @@ void endGoal(float x, float y) {
 // the looks and collision for the bounce pads
 void bouncePad(float x, float y, float width, float bounceSpeed) {
   // if the player jumps while on the bouncepad, then their speed is changed to the bounceSpeed
-  if (playerX + 9 - playerXVelocity >= x && playerX - playerXVelocity - 1 <= x + width && playerY + 12.5 >= y && playerY + 10.5 <= y && playerYVelocity == -5) playerYVelocity = -bounceSpeed;
+  if (playerX + 9 - playerXVelocity >= x && playerX - playerXVelocity - 1 <= x + width && playerY + 12.5 >= y && playerY + 10.5 <= y && playerYVelocity == -5) {
+    playerYVelocity = -bounceSpeed;
+  }
   // re-draws the bouncepad
   gfx_SetColor(249);
   gfx_FillRectangle_NoClip(x, y, width, 3);
@@ -118,7 +136,9 @@ void antiGravity(float x, float y, float width, float height) {
   gfx_FillRectangle_NoClip(x, y, width, height);
   // collision and stuff for the anti-gravity
   if (gfx_CheckRectangleHotspot(x, y, width, height, playerX, playerY, 8, 8)) {
-    if (!playerAntiGravity) playerHasJumped = false;
+    if (!playerAntiGravity) {
+      playerHasJumped = false;
+    }
     anyAntiGravity = true;
   }
 }
@@ -137,17 +157,25 @@ void quicksand(float x, float y, float width, float height) {
 void player(void) {
   timer_Set(1, 0); // because the player() function is called every frame at the beginning of that frame, I can put this timer function in here.
   // this is the "speedrun" timer. It keeps track of your time and stores it into strTemp
-  if (timer < 0xFFFFFE) timer++;
+  if (timer < 0xFFFFFE) {
+    timer++;
+  }
   toString(timer * .0333251953, 2);
   kb_Scan();
   if (kb_Data[7] & kb_Right) {                        // if the right key is pressed, then
     playerXVelocity += .75;
-    if (playerXVelocity > 3) playerXVelocity = 3;   // increase the XVelocity unless the player is going the max speed of 3.
+    if (playerXVelocity > 3) {
+      playerXVelocity = 3;   // increase the XVelocity unless the player is going the max speed of 3.
+    }
   } else if (kb_Data[7] & kb_Left) {                  // (same for if the left key is pressed, but in the opposite direction)
     playerXVelocity -= .75;
-    if (playerXVelocity < -3) playerXVelocity = -3;
+    if (playerXVelocity < -3) {
+      playerXVelocity = -3;
+    }
   } else {
-    if (fabsf(playerXVelocity) < .75) playerXVelocity = 0;
+    if (fabsf(playerXVelocity) < .75) {
+      playerXVelocity = 0;
+    }
     playerXVelocity -= .75 * fabsf(playerXVelocity) / playerXVelocity;  // if no keys are being pressed, then the player slides to a stop
   }
   if (kb_Data[1] & kb_2nd && playerGrounded) { // if the [2nd] key is pressed, then that means jump. Also, the player has to be grounded in order to jump
@@ -157,17 +185,27 @@ void player(void) {
   }
   if (playerGrounded < 3 && (2 * playerAntiGravity - 1)) {
     playerYVelocity -= (2 * playerAntiGravity - 1) * .5;
-    if ((2 * playerAntiGravity - 1) * -playerYVelocity >= 0) playerHasJumped = false;
+    if ((2 * playerAntiGravity - 1) * -playerYVelocity >= 0) {
+      playerHasJumped = false;
+    }
   }
-  if (playerHasJumped && !(kb_Data[1] & kb_2nd)) playerYVelocity = .5 * floor(playerYVelocity); // if the [2nd] key is released while jumping, then the jump is reduced. This gives the player more control.
-  else playerYVelocity *= 1 - .6 * playerQuicksand;
+  if (playerHasJumped && !(kb_Data[1] & kb_2nd)) {
+    playerYVelocity = .5 * floor(playerYVelocity); // if the [2nd] key is released while jumping, then the jump is reduced. This gives the player more control.
+  } else {
+    playerYVelocity *= 1 - .6 * playerQuicksand;
+  }
   gfx_SetColor(5);
   gfx_FillRectangle_NoClip(playerX, playerY, 8, 8); // erase the player before moving it
   // the player moves according to its velocities
   playerX += playerXVelocity;
   playerY += playerYVelocity + playerQuicksand * playerYVelocity * 1.5;
-  if (kb_Data[6] & kb_Clear) quit = true; // quit the level if [clear] is pressed
-  if (playerGrounded) playerGrounded--; // the playerGrounded variable is set to 3 if you're on the ground, and then decriment each frame that you're not on the ground. This essentially gives the player 2 extra frames to jump when they fall off the ledge, called "coyote time"
+  if (kb_Data[6] & kb_Clear) {
+    quit = true; // quit the level if [clear] is pressed
+    speedrunnerMode = false;
+  }
+  if (playerGrounded) {
+    playerGrounded--; // the playerGrounded variable is set to 3 if you're on the ground, and then decriment each frame that you're not on the ground. This essentially gives the player 2 extra frames to jump when they fall off the ledge, called "coyote time"
+  }
   anyAntiGravity = false; // to test if the player is in anti-gravity, the game first has to assume the player is not, before testing to see if they actually are
 }
 
@@ -264,10 +302,10 @@ void deadScreen(void) {
         PrintCenteredText("that, didn't you?", 92, 255);
         break;
       case 19:
-        PrintCenteredText("M4n that de4th", 70, 255);
+        PrintCenteredText("M4n that death", 70, 255);
         PrintCenteredText("wuz stoopid. C4n u", 92, 255);
-        PrintCenteredText("even re4d this?", 114, 255);
-        msleep(200);
+        PrintCenteredText("3v3n r34d this?", 114, 255);
+        msleep(400);
         break;
       case 20:
         PrintCenteredText("I wonder if people", 70, 255);
@@ -289,7 +327,9 @@ void deadScreen(void) {
   kb_Scan();
   dead = false;
   goal = false;
-  if (!speedrunnerMode) timer = 0;
+  if (!speedrunnerMode) {
+    timer = 0;
+  }
 }
 
 // this screen pops up when you get to the goal, and then puts you in the next level
@@ -310,7 +350,9 @@ void goalScreen(void) {
       PrintCenteredText("a personal best!", 158, 255);
     }
     // unlocks the next level - but only if it is locked to begin with. Locked levels have a time of 16,777,215 (or 0xFFFFFF). Unlocked but uncompleted levels have a time of 0.
-    if (level != 15 && tinyJumperData[level] == 0xFFFFFF) tinyJumperData[level] = 0;
+    if (level != 15 && tinyJumperData[level] == 0xFFFFFF) {
+      tinyJumperData[level] = 0;
+    }
     tinyJumperData[level - 1] = timer; // save that best time permanently (or at least until you beat it again)
   }
   // displays what level you're playing
@@ -319,14 +361,19 @@ void goalScreen(void) {
   gfx_PrintStringXY("Level ", 1, 232);
   gfx_PrintInt(level, 1);
   // if invincible mode is active, display this
-  if (invincibleMode) gfx_PrintStringXY("Invincible Mode is on.", 176, 232);
+  if (invincibleMode) {
+    gfx_PrintStringXY("Invincible Mode is on.", 176, 232);
+  }
   // reset these settings for the menu
   goal = false;
   // waits for you to stop pressing a button, before waiting for you to press it again. This allows you to either pause the screen, so you can show someone your time; or, it allows you to skip this screen instead.
   while (kb_AnyKey());
   while (!(kb_AnyKey()));
-  if (speedrunnerMode) level++;
-  else quit = true;
+  if (speedrunnerMode) {
+    level++;
+  } else {
+    quit = true;
+  }
 }
 
 void PrintCenteredText(const char *text, uint8_t textYPosition, uint8_t forecolor) {

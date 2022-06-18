@@ -107,7 +107,9 @@ void level3(void) {
   gfx_FillRectangle_NoClip(50, 50, 180, 5);
   gfx_FillRectangle_NoClip(162, 110, 43, 5);
   gfx_SetColor(255);
-  for (uint8_t spikeDrawer = 124; spikeDrawer < 150; spikeDrawer += 8) gfx_FillTriangle_NoClip(spikeDrawer, 50, spikeDrawer + 4, 42, spikeDrawer + 8, 50);
+  for (uint8_t spikeDrawer = 124; spikeDrawer < 150; spikeDrawer += 8) {
+    gfx_FillTriangle_NoClip(spikeDrawer, 50, spikeDrawer + 4, 42, spikeDrawer + 8, 50);
+  }
   gfx_BlitScreen();
   gfx_SetDrawBuffer();
   while (!dead && !quit && !goal) {
@@ -137,7 +139,9 @@ void level4(void) {
   gfx_FillRectangle_NoClip(170, 134, 40, 6);
   gfx_FillRectangle_NoClip(0, 0, 320, 5);
   gfx_SetColor(255);
-  for (int spikeDrawer = 0; spikeDrawer < 288; spikeDrawer += 8) gfx_FillTriangle_NoClip(spikeDrawer, 235, spikeDrawer + 4, 227, spikeDrawer + 8, 235);
+  for (int spikeDrawer = 0; spikeDrawer < 288; spikeDrawer += 8) {
+    gfx_FillTriangle_NoClip(spikeDrawer, 235, spikeDrawer + 4, 227, spikeDrawer + 8, 235);
+  }
   gfx_SetColor(43);
   gfx_FillRectangle_NoClip(290, 20, 4, 215);
   gfx_BlitScreen();
@@ -203,7 +207,9 @@ void level5(void) {
       gfx_FillRectangle_NoClip(spikeXPos[spikeNumber], spikeYPos[spikeNumber] - 8, 9, 9);
       spike(spikeXPos[spikeNumber], spikeYPos[spikeNumber] - 8, 9, 8);
       spikeXPos[spikeNumber] += spikeXSpeed[spikeNumber];
-      if (spikeXPos[spikeNumber] < spikeXMin[spikeNumber] || spikeXPos[spikeNumber] > spikeXMax[spikeNumber]) spikeXSpeed[spikeNumber] *= -1;
+      if (spikeXPos[spikeNumber] < spikeXMin[spikeNumber] || spikeXPos[spikeNumber] > spikeXMax[spikeNumber]) {
+        spikeXSpeed[spikeNumber] *= -1;
+      }
       gfx_SetColor(255);
       gfx_FillTriangle_NoClip(spikeXPos[spikeNumber], spikeYPos[spikeNumber], spikeXPos[spikeNumber] + 4, spikeYPos[spikeNumber] - 8, spikeXPos[spikeNumber] + 8, spikeYPos[spikeNumber]);
     }

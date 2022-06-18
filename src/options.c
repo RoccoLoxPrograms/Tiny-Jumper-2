@@ -6,6 +6,7 @@
 
 #include <tice.h>
 #include <keypadc.h>
+#include <fontlibc.h>
 #include <fileioc.h>
 #include <stdint.h>
 #include <math.h>
@@ -35,13 +36,13 @@ static void settingsSwitch(unsigned int x, uint8_t y, bool turnedOn) {
 }
 
 static void confirmReset(void) {
-  gfx_Rectangle_NoClip(211, 179, 19, 11);
+  gfx_Rectangle_NoClip(211, 189, 19, 11);
   bool keyPressed = false;
   int selectorX = 211;
   uint8_t selectorWidth = 19;
   gfx_SetColor(5);
-  gfx_Rectangle_NoClip(198, 168, 82, 11);
-  gfx_PrintStringXY("NO     YES", 213, 181);
+  gfx_Rectangle_NoClip(198, 178, 82, 11);
+  gfx_PrintStringXY("NO     YES", 213, 191);
   while (kb_AnyKey());
   while (!kb_IsDown(kb_KeyClear) && !kb_IsDown(kb_KeyEnter) && !kb_IsDown(kb_Key2nd)) {
     kb_Scan();
@@ -51,11 +52,13 @@ static void confirmReset(void) {
       levelX = 1;
       levelY = 0;
     }
-    if (!kb_Data[7]) keyPressed = false;
+    if (!kb_Data[7]) {
+      keyPressed = false;
+    }
     if (kb_Data[7] && !keyPressed) {
       keyPressed = true;
       gfx_SetColor(5);
-      gfx_Rectangle_NoClip(selectorX, 179, selectorWidth, 11);
+      gfx_Rectangle_NoClip(selectorX, 189, selectorWidth, 11);
       switch (kb_Data[7]) {
         case kb_Left:
           selectorX -= 31;
@@ -77,13 +80,13 @@ static void confirmReset(void) {
           break;
       }
       gfx_SetColor(21);
-      gfx_Rectangle_NoClip(selectorX, 179, selectorWidth, 11);
+      gfx_Rectangle_NoClip(selectorX, 189, selectorWidth, 11);
     }
   }
   gfx_SetColor(5);
-  gfx_FillRectangle_NoClip(211, 179, 58, 11);
+  gfx_FillRectangle_NoClip(211, 189, 58, 11);
   gfx_SetColor(21);
-  gfx_Rectangle_NoClip(198, 168, 82, 11);
+  gfx_Rectangle_NoClip(198, 178, 82, 11);
   while (kb_AnyKey());
 }
 
@@ -317,7 +320,9 @@ static void customizePlayer(void) {
       }
       gfx_Rectangle(cursorX, cursorY, width, height);
       if (!keyPressed) {
-        while (timer_Get(1) < 9000 && kb_Data[7]) kb_Scan();
+        while (timer_Get(1) < 9000 && kb_Data[7]) {
+          kb_Scan();
+        }
       }
       keyPressed = true;
       timer_Set(1, 0);
@@ -359,10 +364,13 @@ void options(void) {
   gfx_PrintStringXY("Invert Colors", 192, 90);
   gfx_PrintStringXY("Invinciblity Mode", 192, 120);
   gfx_PrintStringXY("(Times aren't saved)", 172, 132);
-  gfx_PrintStringXY("Reset Times", 200, 170);
+  gfx_PrintStringXY("Reset Times", 200, 180);
   if (golds > 14) {
     gfx_PrintStringXY("Custom Design", 33, 199);
-    gfx_PrintStringXY("Speedrunner Mode", 193, 150);
+    gfx_PrintStringXY("Speedrun All Levels", 193, 150);
+    gfx_PrintStringXY("Best time: ", 172, 162);
+    toString(tinyJumperData[83], 2);
+    gfx_PrintString(strTemp);
     settingsSwitch(170, 150, speedrunnerMode);
   }
   gfx_SetTextFGColor(183);
@@ -425,7 +433,9 @@ void options(void) {
       keyPressed = false;
       timer_Set(1, 0);
     }
-    if (kb_IsDown(kb_KeyClear) || kb_IsDown(kb_KeyMode)) quit = true;
+    if (kb_IsDown(kb_KeyClear) || kb_IsDown(kb_KeyMode)) {
+      quit = true;
+    }
     if ((kb_IsDown(kb_KeyEnter) || kb_IsDown(kb_Key2nd)) && !keyPressed) {
       keyPressed = true;
       switch (selectorY) {
@@ -444,9 +454,9 @@ void options(void) {
           break;
         case 148:
           speedrunnerMode = !speedrunnerMode;
-          settingsSwitch(selectorX + 2, selectorY + 2, speedrunnerMode);
+          quit = true;
           break;
-        case 168:
+        case 178:
           confirmReset();
           break;
         case 213:
@@ -481,10 +491,16 @@ void options(void) {
         case kb_Up:
           if (selectorX != 21) {
             selectorY -= 30;
-            if (selectorY == 138 && golds < 15) selectorY = 118;
-            if (selectorY == 138) selectorY = 148;
-            if (selectorY == 28) selectorY = 168;
-            if (selectorY == 168) {
+            if (selectorY == 148 && golds < 15) {
+              selectorY = 118;
+            }
+            if (selectorY == 138) {
+              selectorY = 148;
+            }
+            if (selectorY == 28) {
+              selectorY = 178;
+            }
+            if (selectorY == 178) {
               selectorX = 198;
               selectorWidth = 82;
               selectorHeight = 11;
@@ -498,10 +514,16 @@ void options(void) {
         case kb_Down:
           if (selectorX != 21) {
             selectorY += 30;
-            if (selectorY == 148 && golds < 15) selectorY = 168;
-            if (selectorY == 178) selectorY = 168;
-            if (selectorY == 198) selectorY = 58;
-            if (selectorY == 168) {
+            if (selectorY == 148 && golds < 15) {
+              selectorY = 178;
+            }
+            if (selectorY == 178) {
+              selectorY = 178;
+            }
+            if (selectorY == 208) {
+              selectorY = 58;
+            }
+            if (selectorY == 178) {
               selectorX = 198;
               selectorWidth = 82;
               selectorHeight = 11;
@@ -518,7 +540,9 @@ void options(void) {
       gfx_SetColor(21);
       gfx_Rectangle_NoClip(selectorX, selectorY, selectorWidth, selectorHeight);
       if (!keyPressed) {
-        while (timer_Get(1) < 9000 && kb_Data[7]) kb_Scan();
+        while (timer_Get(1) < 9000 && kb_Data[7]) {
+          kb_Scan();
+        }
       }
       keyPressed = true;
       timer_Set(1, 0);
@@ -526,7 +550,23 @@ void options(void) {
   }
   // resets these values for the home screen
   quit = false;
-  gfx_SetDrawBuffer();
+  gfx_SetDraw(!speedrunnerMode);
   gfx_SetTextScale(1, 1);
-  level = 0;
+  // if speedrunnerMode is false, then the level gets set to 0, sending you back to the menu. However, if speedrunnerMode is true, then it sends you straight to level 1
+  level = speedrunnerMode;
+  if (speedrunnerMode) {
+    gfx_ZeroScreen();
+    PrintCenteredText("Start speedrun in", 70, 255);
+    msleep(600);
+    fontlib_SetCursorPosition(115, 102);
+    fontlib_DrawGlyph(51);
+    msleep(600);
+    fontlib_SetCursorPosition(145, 124);
+    fontlib_DrawGlyph(50);
+    msleep(600);
+    fontlib_SetCursorPosition(175, 146);
+    fontlib_DrawGlyph(49);
+    msleep(600);
+    kb_Scan();
+  }
 }

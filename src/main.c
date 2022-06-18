@@ -36,7 +36,7 @@ bool goal = false;
 uint8_t level = 0;
 uint8_t levelX = 1;
 uint8_t levelY = 0;
-unsigned int tinyJumperData[83];
+unsigned int tinyJumperData[84];
 uint8_t golds = 0;
 uint8_t goalColor = 20;
 
@@ -50,6 +50,7 @@ static void endSpeedrun(void) {
   PrintCenteredText("speedrun! Your", 94, 255);
   PrintCenteredText("final time was:", 116, 255);
   PrintCenteredText(strTemp, 138, 255);
+  tinyJumperData[83] = timer;
   goal = false;
   while (kb_AnyKey());
   while (!(kb_AnyKey()));
@@ -82,7 +83,9 @@ static void menu(void) {
         gfx_SetTextBGColor(21);
       }
       gfx_FillRectangle_NoClip(levelDrawerX * 60 + 21, levelDrawerY * 60 + 61, 38, 38);
-      if (tinyJumperData[levelDrawerX + 5 * levelDrawerY] <= goldTimes[levelDrawerX + 5 * levelDrawerY] && tinyJumperData[levelDrawerX + 5 * levelDrawerY] != 0) gfx_ScaledTransparentSprite_NoClip(GoldMedal, levelDrawerX * 60 + 22, levelDrawerY * 60 + 61, 2, 2);
+      if (tinyJumperData[levelDrawerX + 5 * levelDrawerY] <= goldTimes[levelDrawerX + 5 * levelDrawerY] && tinyJumperData[levelDrawerX + 5 * levelDrawerY] != 0) {
+        gfx_ScaledTransparentSprite_NoClip(GoldMedal, levelDrawerX * 60 + 22, levelDrawerY * 60 + 61, 2, 2);
+      }
       // displays the number of the level in the center of the square
       toString(1 + levelDrawerX + 5 * levelDrawerY, 0);
       gfx_PrintStringXY(strTemp, levelDrawerX * 60 + 40 - gfx_GetStringWidth(strTemp) / 2, levelDrawerY * 60 + 76);
@@ -92,13 +95,10 @@ static void menu(void) {
   gfx_SetTextBGColor(5);
   gfx_SetTextTransparentColor(5);
   gfx_PrintStringXY("Press [mode] for options", 77, 47);
-  // gets how many gold levels you have done and stores it in golds
-  /*golds = 0;
-  for (uint8_t goldGetter = 0; goldGetter < 16; goldGetter++) {
-    if (tinyJumperData[goldGetter] && tinyJumperData[goldGetter] <= goldTimes[goldGetter]) golds++;
-  }*/
   golds = 15;
-  if (golds > 14) gfx_PrintStringXY("BONUS LEVEL!", 118, 227);
+  if (golds > 14) {
+    gfx_PrintStringXY("BONUS LEVEL!", 118, 227);
+  }
   gfx_SetColor(21);
   gfx_FillRectangle_NoClip(0, 0, 320, 40);
   gfx_SetTextBGColor(21);
@@ -126,7 +126,9 @@ static void menu(void) {
     toString(goldTimes[levelX + 5 * levelY - 1] * .0333251953, 2);
     gfx_PrintStringXY(strTemp, 281, 29);
     gfx_BlitBuffer();
-    while (kb_AnyKey() && timer_Get(1) < 3000 + 6000 * keyFirstPressed) kb_Scan();
+    while (kb_AnyKey() && timer_Get(1) < 3000 + 6000 * keyFirstPressed) {
+      kb_Scan();
+    }
     keyFirstPressed = false;
     while (!kb_AnyKey()) {
       kb_Scan();
@@ -160,14 +162,24 @@ static void menu(void) {
           levelX = 5;
           levelY--;
         }
-      } else if (kb_Data[7] & kb_Up) levelY--;
-      if (levelY == 255) levelY = 2 + (golds > 14);
-      if (levelY == 3 + (golds > 14)) levelY = 0;
+      } else if (kb_Data[7] & kb_Up) {
+        levelY--;
+      }
+      if (levelY == 255) {
+        levelY = 2 + (golds > 14);
+      }
+      if (levelY == 3 + (golds > 14)) {
+        levelY = 0;
+      }
     } while (tinyJumperData[levelX + 5 * levelY - 1] == 0xFFFFFF);
     // if [mode] is pressed, then do the settings screen
-    if (kb_Data[1] & kb_Mode) level = 18;
+    if (kb_Data[1] & kb_Mode) {
+      level = 18;
+    }
     // if clear is pressed, quit
-    if (kb_Data[6] & kb_Clear) quit = true;
+    if (kb_Data[6] & kb_Clear) {
+      quit = true;
+    }
     // if [2nd] is pressed, play the selected level
     if ((kb_Data[1] & kb_2nd) || (kb_Data[6] & kb_Enter)) {
       level = levelX + 5 * levelY; // starts the level that the cursor has selected
@@ -175,10 +187,12 @@ static void menu(void) {
       // display this text in order to give the person time to get ready
       gfx_ZeroScreen();
       PrintCenteredText("Are you ready?", 70, 255);
-      delay(600);
+      msleep(600);
       PrintCenteredText("Get set...", 92, 255);
-      delay(600);
-      if (tinyJumperData[16] > 255) gfx_FlipSpriteX(playerSprites[tinyJumperData[16] - 256], playerSprites[6]);
+      msleep(600);
+      if (tinyJumperData[16] > 255) {
+        gfx_FlipSpriteX(playerSprites[tinyJumperData[16] - 256], playerSprites[6]);
+      }
       gfx_SetTextScale(1, 1);
       gfx_SetTextBGColor(247);
       timer = 0;
@@ -192,7 +206,7 @@ int main(void) {
   if (!tinyDataSlot) {
     resetData();
   } else {
-    ti_Read(&tinyJumperData, 249, 1, tinyDataSlot);
+    ti_Read(&tinyJumperData, 252, 1, tinyDataSlot);
   }
   gfx_Begin();
   fontlib_SetFont(TJFont, 0);
@@ -284,14 +298,20 @@ int main(void) {
       default:
         break;
     }
-    if (dead) deadScreen();
-    if (goal) goalScreen();
+    if (dead) {
+      deadScreen();
+    }
+    if (goal) {
+      goalScreen();
+    }
     level *= !quit;
-    if (level == 0) menu();
+    if (level == 0) {
+      menu();
+    }
   }
   gfx_End();
   tinyDataSlot = ti_Open("TJ2Data", "w+");
-  ti_Write(&tinyJumperData, 249, 1, tinyDataSlot);
+  ti_Write(&tinyJumperData, 252, 1, tinyDataSlot);
   ti_SetArchiveStatus(true, tinyDataSlot);
   return 0;
 }
