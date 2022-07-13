@@ -3,6 +3,7 @@
 #include "variables.h"
 #include "engine.h"
 #include "asm/invert.h"
+#include "spriteMaker.h"
 
 #include <tice.h>
 #include <keypadc.h>
@@ -340,6 +341,7 @@ static void customizePlayer(void) {
   tinyJumperData[16] = playerColor;
   gfx_SetColor(21);
   gfx_Rectangle_NoClip(21, 213, 119, 12);
+  spriteMaker();
   while (kb_AnyKey());
 }
 
@@ -347,7 +349,7 @@ void options(void) {
   bool keyPressed;
   uint8_t colorNum = 96;
   uint8_t paletteY = 91;
-  uint8_t selectorX = 168;
+  uint8_t selectorX = 164;
   uint8_t selectorY = 58;
   uint8_t selectorWidth = 20;
   uint8_t selectorHeight = 13;
@@ -359,19 +361,19 @@ void options(void) {
   gfx_SetTextFGColor(255);
   gfx_PrintStringXY("Tiny Jumper 2.0     (c) 2022 RoccoLox Programs", 8, 231);
   gfx_PrintStringXY("Customize Player", 23, 215);
-  gfx_PrintStringXY("Disable death", 193, 60);
-  gfx_PrintStringXY("messages", 193, 70);
-  gfx_PrintStringXY("Invert Colors", 192, 90);
-  gfx_PrintStringXY("Invinciblity Mode", 192, 120);
+  gfx_PrintStringXY("Disable death", 187, 60);
+  gfx_PrintStringXY("messages", 187, 70);
+  gfx_PrintStringXY("Invert Colors", 186, 90);
+  gfx_PrintStringXY("Invinciblity Mode", 186, 120);
   gfx_PrintStringXY("(Times aren't saved)", 172, 132);
   gfx_PrintStringXY("Reset Times", 200, 180);
   if (golds > 14) {
     gfx_PrintStringXY("Custom Design", 33, 199);
-    gfx_PrintStringXY("Speedrun All Levels", 193, 150);
+    gfx_PrintStringXY("Speedrun All Levels", 187, 150);
     gfx_PrintStringXY("Best time: ", 172, 162);
     toString(tinyJumperData[83], 2);
     gfx_PrintString(strTemp);
-    settingsSwitch(170, 150, speedrunnerMode);
+    settingsSwitch(166, 150, speedrunnerMode);
   }
   gfx_SetTextFGColor(183);
   gfx_PrintStringXY("Your Player", 41, 44);
@@ -420,9 +422,9 @@ void options(void) {
       lockedBox(18 * displayBox + 36, 174, 16, 16);
     }
   }
-  settingsSwitch(170, 60, tinyJumperData[81]);
-  settingsSwitch(170, 90, tinyJumperData[82]);
-  settingsSwitch(170, 120, invincibleMode);
+  settingsSwitch(166, 60, tinyJumperData[81]);
+  settingsSwitch(166, 90, tinyJumperData[82]);
+  settingsSwitch(166, 120, invincibleMode);
   gfx_SetTextFGColor(255);
   gfx_SetColor(21);
   gfx_Rectangle_NoClip(selectorX, selectorY, selectorWidth, selectorHeight);
@@ -469,7 +471,7 @@ void options(void) {
       }
     }
     if (kb_Data[7] && (!keyPressed || timer_Get(1) > 3000)) {
-      if (!(kb_IsDown(kb_KeyLeft) && selectorX == 21) && !(kb_IsDown(kb_KeyRight) && selectorX == 168)) {
+      if (!(kb_IsDown(kb_KeyLeft) && selectorX == 21) && !(kb_IsDown(kb_KeyRight) && selectorX == 164)) {
         gfx_SetColor(5);
         gfx_Rectangle_NoClip(selectorX, selectorY, selectorWidth, selectorHeight);
       }
@@ -482,7 +484,7 @@ void options(void) {
           break;
         case kb_Right:
           if (selectorX == 21) {
-            selectorX = 168;
+            selectorX = 164;
             selectorY = 58;
             selectorWidth = 20;
             selectorHeight = 13;
@@ -505,7 +507,7 @@ void options(void) {
               selectorWidth = 82;
               selectorHeight = 11;
             } else {
-              selectorX = 168;
+              selectorX = 164;
               selectorWidth = 20;
               selectorHeight = 13;
             }
@@ -528,7 +530,7 @@ void options(void) {
               selectorWidth = 82;
               selectorHeight = 11;
             } else {
-              selectorX = 168;
+              selectorX = 164;
               selectorWidth = 20;
               selectorHeight = 13;
             }
