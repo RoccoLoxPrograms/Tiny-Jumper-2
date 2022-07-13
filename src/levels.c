@@ -252,13 +252,69 @@ void level6(void) {
 }
 
 void level7(void) {
-  levelSetup(5, 227);
+  int8_t button = 0;
+  levelSetup(5, 31);
+  gfx_FillRectangle_NoClip(0, 40, 45, 6);
+  for (uint8_t platformDrawer = 0; platformDrawer < 180; platformDrawer += 48) {
+    gfx_FillRectangle_NoClip(platformDrawer + 80, platformDrawer / 2 + 40, 9, 80);
+  }
+  gfx_FillRectangle_NoClip(265, 45, 55, 5);
+  gfx_SetColor(43);
+  gfx_FillRectangle_NoClip(265, 50, 5, 142);
+  gfx_FillRectangle_NoClip(157, 59, 3, 50);
+  gfx_FillRectangle_NoClip(0, 235, 187, 5);
+  drawButton(295, 231);
   gfx_BlitScreen();
   gfx_SetDrawBuffer();
   while (!dead && !quit && !goal) {
     player();
+    spike(265, 50, 6, 142);
+    spike(157, 59, 3, 50);
+    spike(0, 234, 187, 6);
     rectPlatform(0, 235, 320, 5);
-    drawPlayerAndTime(1, 1);
+    rectPlatform(0, 40, 45, 5);
+    rectPlatform(270, 45, 90, 5);
+    for (uint8_t platformDrawer = 0; platformDrawer < 180; platformDrawer += 48) {
+      rectPlatform(platformDrawer + 80, platformDrawer / 2 + 40, 9, 80);
+    }
+    switch (button) {
+      case 0: // when the first button has yet to be pressed
+        if (gfx_CheckRectangleHotspot(playerX, playerY, 8, 8, 295, 231, 15, 5)) {
+          button = 1;
+          gfx_SetColor(5);
+          gfx_FillRectangle_NoClip(295, 231, 15, 4);
+          drawButton(15, 36);
+        }
+        drawPlayerAndTime(2, 48);
+        break;
+      case 1: // after the first button has been pressed
+        playerQuicksand = false;
+        drawPlayerAndTime(2, 48);
+        quicksand(89, 65, 39, 108);
+        quicksand(128, 144, 48, 29);
+        quicksand(185, 113, 39, 99);
+        if (gfx_CheckRectangleHotspot(playerX, playerY, 8, 8, 15, 37, 15, 5)) {
+          button = 2;
+          gfx_SetColor(45);
+          gfx_FillRectangle_NoClip(80, 8, 9, 140);
+          gfx_SetColor(5);
+          gfx_FillRectangle_NoClip(15, 36, 15, 4);
+          gfx_FillRectangle_NoClip(89, 65, 39, 108);
+          gfx_FillRectangle_NoClip(128, 144, 48, 29);
+          gfx_FillRectangle_NoClip(185, 113, 39, 99);
+        }
+        break;
+      default: // after the second button has been pressed
+        for (uint8_t antiGravityDrawer = 0; antiGravityDrawer < 200; antiGravityDrawer += 48) {
+          antiGravity(0, antiGravityDrawer / 2 + 96, antiGravityDrawer + 80, 25);
+        }
+        antiGravity(270, 50, 50, 167);
+        rectPlatform(80, 8, 9, 90);
+        drawPlayerAndTime(2, 48);
+      break;
+    }
+    endGoal(287, 50);
+    playerAntiGravity = anyAntiGravity;
     endOfFrame();
   }
 }

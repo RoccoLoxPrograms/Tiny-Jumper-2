@@ -9,6 +9,7 @@ extern "C" {
 
 void drawPlayerAndTime(int, uint8_t);
 void endOfFrame(void);
+void drawButton(uint24_t, uint8_t);
 void resetData(void);
 void toString(float, uint8_t);
 void rectPlatform(float, float, float, float);

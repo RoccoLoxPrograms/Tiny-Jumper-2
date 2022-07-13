@@ -49,6 +49,13 @@ void endOfFrame(void) {
   while (timer_Get(1) < 1092);
 }
 
+void drawButton(uint24_t x, uint8_t y) {
+  gfx_SetColor(167);
+  gfx_FillRectangle_NoClip(x, y + 2, 15, 3);
+  gfx_HorizLine_NoClip(x + 1, y + 1, 13);
+  gfx_HorizLine_NoClip(x + 3, y, 9);
+}
+
 void resetData(void) {
   tinyJumperData[0] = 0;
   tinyJumperData[15] = 0;
