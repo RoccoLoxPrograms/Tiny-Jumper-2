@@ -95,7 +95,7 @@ static void menu(void) {
   gfx_SetTextBGColor(5);
   gfx_SetTextTransparentColor(5);
   gfx_PrintStringXY("Press [mode] for options", 77, 47);
-  ////////////////////////golds = 15;///////////////////////////
+  //golds = 15;
   if (golds > 14) {
     gfx_PrintStringXY("BONUS LEVEL!", 118, 227);
   }

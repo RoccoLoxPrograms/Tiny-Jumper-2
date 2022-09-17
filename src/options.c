@@ -341,7 +341,9 @@ static void customizePlayer(void) {
   tinyJumperData[16] = playerColor;
   gfx_SetColor(21);
   gfx_Rectangle_NoClip(21, 213, 119, 12);
-  spriteMaker();
+  if (playerColor == 256) {
+    spriteMaker();
+  }
   while (kb_AnyKey());
 }
 
