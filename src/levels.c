@@ -16,47 +16,39 @@ static void levelSetup(float playerXStart, float playerYStart) {
 
 void level1(void) {
   levelSetup(5, 227);
-  gfx_FillRectangle_NoClip(200, 218, 100, 5);
-  gfx_FillRectangle_NoClip(150, 201, 50, 5);
-  gfx_FillRectangle_NoClip(100, 184, 50, 5);
-  gfx_FillRectangle_NoClip(45, 167, 55, 5);
-  gfx_FillRectangle_NoClip(0, 167, 25, 5);
-  gfx_FillRectangle_NoClip(0, 147, 10, 5);
-  gfx_FillRectangle_NoClip(15, 127, 10, 5);
-  gfx_FillRectangle_NoClip(0, 107, 10, 5);
-  gfx_FillRectangle_NoClip(15, 87, 50, 5);
-  gfx_FillRectangle_NoClip(95, 87, 95, 5);
-  gfx_FillRectangle_NoClip(210, 72, 110, 5);
+  gfx_FillRectangle_NoClip(0, 0, 5, 240);
+  gfx_FillRectangle_NoClip(315, 0, 5, 240);
+  gfx_FillRectangle_NoClip(100, 215, 40, 5);
+  gfx_FillRectangle_NoClip(170, 197, 25, 5);
+  gfx_FillRectangle_NoClip(210, 179, 90, 5);
+  gfx_FillRectangle_NoClip(307, 155, 9, 5);
+  gfx_FillRectangle_NoClip(183, 132, 94, 5);
+  gfx_FillRectangle_NoClip(48, 132, 96, 5);
+  gfx_FillRectangle_NoClip(5, 112, 8, 5);
+  gfx_FillRectangle_NoClip(34, 90, 252, 5);
   gfx_SetColor(255);
-  gfx_FillTriangle_NoClip(54, 227, 50, 235, 58, 235);
-  gfx_FillTriangle_NoClip(114, 227, 110, 235, 118, 235);
-  // these last ones are the bits of lava
+  gfx_FillTriangle_NoClip(252, 179, 256, 171, 260, 179);
   gfx_SetColor(43);
-  gfx_FillRectangle_NoClip(25, 168, 20, 4);
-  gfx_FillRectangle_NoClip(65, 88, 30, 4);
-  gfx_BlitScreen(); // copies this base frame to the buffer
-  gfx_SetDrawBuffer(); // everything will now get drawn to the buffer
+  gfx_FillRectangle_NoClip(144, 133, 39, 4);
+  gfx_BlitScreen();
+  gfx_SetDrawBuffer();
   while (!dead && !quit && !goal) {
-    player(); // move the player
-    // the collisions for all the platforms
+    player();
     rectPlatform(0, 235, 320, 5);
-    rectPlatform(200, 218, 100, 5);
-    rectPlatform(150, 201, 50, 5);
-    rectPlatform(100, 184, 50, 5);
-    rectPlatform(45, 167, 55, 5);
-    rectPlatform(0, 167, 25, 5);
-    rectPlatform(0, 147, 10, 5);
-    rectPlatform(15, 127, 10, 5);
-    rectPlatform(0, 107, 10, 5);
-    rectPlatform(15, 87, 50, 5);
-    rectPlatform(95, 87, 95, 5);
-    rectPlatform(210, 72, 110, 5);
-    spike(50, 230, 9, 8);
-    spike(110, 230, 9, 8);
-    spike(25, 168, 20, 4);
-    spike(65, 88, 30, 4);
-    endGoal(300, 56);
-    drawPlayerAndTime(1, 1);
+    rectPlatform(0, 0, 5, 240);
+    rectPlatform(315, 0, 5, 240);
+    rectPlatform(100, 215, 40, 5);
+    rectPlatform(170, 197, 25, 5);
+    rectPlatform(210, 179, 90, 5);
+    spike(252, 171, 9, 8);
+    rectPlatform(307, 155, 9, 5);
+    spike(144, 133, 39, 4);
+    rectPlatform(183, 132, 94, 5);
+    rectPlatform(48, 132, 96, 5);
+    rectPlatform(5, 112, 8, 5);
+    rectPlatform(34, 90, 252, 5);
+    endGoal(152, 74);
+    drawPlayerAndTime(245, 80);
     endOfFrame();
   }
 }
@@ -158,7 +150,7 @@ void level4(void) {
     bouncePad(182, 132, 16, 12.5);
     spike(0, 227, 290, 8);
     endGoal(304, 219);
-    drawPlayerAndTime(170, 217);
+    drawPlayerAndTime(172, 6);
     playerQuicksand = false;
     quicksand(0, 5, 50, 12);
     quicksand(50, 5, 120, 6);
@@ -240,13 +232,13 @@ void level6(void) {
     rectPlatform(260, 75, 60, 5);
     rectPlatform(0, 55, 40, 5);
     rectPlatform(0, 235, 320, 5);
-    spike(215, 120, 8, 20);
+    spike(217, 120, 8, 20);
     spike(151, 75, 8, 20);
-    spike(87, 30, 8, 20);
+    spike(85, 30, 8, 20);
     antiGravity(0, 140, 320, 95);
     playerAntiGravity = anyAntiGravity;
     endGoal(8, 39);
-    drawPlayerAndTime(1, 1);
+    drawPlayerAndTime(151, 85);
     endOfFrame();
   }
 }
@@ -352,7 +344,7 @@ void level8(void) {
     rectPlatform(97, 25, 12, 6);
     playerAntiGravity = anyAntiGravity;
     endGoal(2, 5);
-    drawPlayerAndTime(65, 132);
+    drawPlayerAndTime(68, 132);
     endOfFrame();
   }
 }
@@ -404,9 +396,8 @@ void level9(void) {
     gfx_SetColor(43);
     gfx_FillRectangle_NoClip(0, lavaY, 320, 241 - lavaY);
     spike(0, lavaY, 320, 240 - lavaY);
-
     playerAntiGravity = anyAntiGravity;
-    drawPlayerAndTime(1, 1);
+    drawPlayerAndTime(260, 1);
     endOfFrame();
   }
 }
