@@ -34,6 +34,7 @@ void spriteMaker(void) {
   gfx_PrintStringXY("Make a custom sprite", 90, 29);
   uint24_t cursorX = 240;
   uint8_t cursorY = 108;
+  uint8_t playerColor = 255;
   for (uint8_t spriteDrawer = 17; spriteDrawer < 81; spriteDrawer++) {
     drawSquare(cursorX, cursorY, tinyJumperData[spriteDrawer]);
     cursorX += 8;
@@ -45,6 +46,16 @@ void spriteMaker(void) {
   cursorX = 240;
   cursorY = 108;
   // draw the palette color chooser thing
+  uint8_t colorNum = 96;
+  uint8_t paletteY = 90;
+  do {
+    for (uint8_t paletteX = 16; paletteX < 224; paletteX += 13) {
+      gfx_SetColor(colorNum);
+      gfx_FillRectangle_NoClip(paletteX, paletteY, 13, 10);
+      colorNum++;
+    }
+    paletteY += 10;
+  } while (colorNum);
   while (kb_AnyKey()) {
     kb_Scan();
   }
@@ -57,14 +68,55 @@ void spriteMaker(void) {
       timer_Set(1, 0);
     }
     if (pickColor) {
+      gfx_SetColor(colorNum);
+      gfx_Rectangle_NoClip(cursorX, cursorY, 13, 10);
+      if (kb_Data[7] && (!keyPressed || timer_Get(1) > 3000)) {
+        switch (kb_Data[7]) {
+          case kb_Right:
+            cursorX += 13;
+            if (cursorX > 211) {
+              pickColor = false;
+              cursorX = 240;
+              cursorY -= cursorY % 8 + 4;
+              if (cursorY < 108) {
+                cursorY = 108;
+              } else if (cursorY > 164) {
+                cursorY = 164;
+              }
+            }
+            break;
+          case kb_Left:
+            cursorX -= 13 * (cursorX > 16);
+            break;
+          case kb_Up:
+            cursorY -= 10 * (cursorY > 90);
+            break;
+          case kb_Down:
+            cursorY += 10 * (cursorY < 170);
+            break;
+          default:
+            break;
+        }
+        while (!keyPressed && timer_Get(1) < 3000 && kb_Data[7]) {
+          kb_Scan();
+        }
+        keyPressed = true;
+        timer_Set(1, 0);
+      }
+      colorNum = (cursorX - 16) / 13 + 96 + 16 * (cursorY / 10 - 9);
+      gfx_SetColor(255);
+      if (colorNum > 131 && colorNum % 8 > 3 && colorNum < 256) {
+        gfx_SetColor(0);
+      }
+      gfx_Rectangle_NoClip(cursorX, cursorY, 13, 10);
       if (kb_IsDown(kb_Key2nd)) {
         pickColor = false;
         cursorX = 240;
         cursorY = 108;
+        playerColor = colorNum;     
       }
     } else {
-      // code for deciding what color to make the cursor
-      gfx_SetColor(0);
+      gfx_SetColor(tinyJumperData[cursorX / 8 - 13 + cursorY - 108]);
       gfx_Rectangle_NoClip(cursorX, cursorY, 8, 8);
       if (kb_Data[7] && (!keyPressed || timer_Get(1) > 3000)) {
         switch (kb_Data[7]) {
@@ -75,6 +127,8 @@ void spriteMaker(void) {
             cursorX -= 8;
             if (cursorX < 240) {
               pickColor = true;
+              cursorX = 211;
+              cursorY -= cursorY % 10;
             }
             break;
           case kb_Up:
@@ -86,14 +140,22 @@ void spriteMaker(void) {
           default:
             break;
         }
-        while (!keyPressed && timer_Get(1) < 9000 && kb_Data[7]) {
+        while (!keyPressed && timer_Get(1) < 3000 && kb_Data[7]) {
           kb_Scan();
         }
         keyPressed = true;
         timer_Set(1, 0);
       }
+      colorNum = tinyJumperData[cursorX / 8 - 13 + cursorY - 108];
+      gfx_SetColor(255);
+      if (colorNum > 131 && colorNum % 8 > 3 && colorNum < 256) {
+        gfx_SetColor(0);
+      }
+      gfx_Rectangle_NoClip(cursorX, cursorY, 8, 8);
       if (kb_IsDown(kb_KeyMode)) {
         pickColor = true;
+        cursorX = 16;
+        cursorY = 90;
       }
     }
   } while (!kb_IsDown(kb_KeyEnter) && !kb_IsDown(kb_KeyClear));
