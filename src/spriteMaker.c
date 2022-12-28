@@ -8,9 +8,9 @@
 
 static void drawSquare(uint24_t cursorX, uint8_t cursorY, uint8_t color) {
   if (color == 79) {
-    gfx_SetColor(34);
+    gfx_SetColor(255);
     gfx_FillRectangle_NoClip(cursorX, cursorY, 8, 8);
-    gfx_SetColor(181);
+    gfx_SetColor(34);
     uint24_t transparentDrawerX = cursorX;
     for (uint8_t transparentDrawerY = cursorY; transparentDrawerY < cursorY + 8; transparentDrawerY += 2){
       do {
@@ -32,6 +32,9 @@ void spriteMaker(void) {
   gfx_FillRectangle_NoClip(0, 0, 320, 40);
   PrintCenteredText("Customize", 5, 183);
   gfx_PrintStringXY("Make a custom sprite", 90, 29);
+  gfx_PrintStringXY("Press 2ND to draw, MODE to select color,", 6, 200);
+  gfx_PrintStringXY("ALPHA to erase, CLEAR to quit without saving,", 6, 212);
+  gfx_PrintStringXY("and ENTER to save the design.", 6, 224);
   uint24_t cursorX = 240;
   uint8_t cursorY = 108;
   uint8_t playerColor = 255;
@@ -92,7 +95,7 @@ void spriteMaker(void) {
             cursorY -= 10 * (cursorY > 90);
             break;
           case kb_Down:
-            cursorY += 10 * (cursorY < 170);
+            cursorY += 10 * (cursorY < 180);
             break;
           default:
             break;
@@ -103,21 +106,23 @@ void spriteMaker(void) {
         keyPressed = true;
         timer_Set(1, 0);
       }
-      colorNum = (cursorX - 16) / 13 + 96 + 16 * (cursorY / 10 - 9);
-      gfx_SetColor(255);
-      if (colorNum > 131 && colorNum % 8 > 3 && colorNum < 256) {
-        gfx_SetColor(0);
-      }
-      gfx_Rectangle_NoClip(cursorX, cursorY, 13, 10);
       if (kb_IsDown(kb_Key2nd)) {
         pickColor = false;
         cursorX = 240;
         cursorY = 108;
-        playerColor = colorNum;     
+        playerColor = colorNum; 
+        while (kb_AnyKey());
+      }
+      colorNum = (cursorX - 16) / 13 + 96 + 16 * (cursorY / 10 - 9);
+      gfx_SetColor(255);
+      if (colorNum > 131 && colorNum % 8 > 3) {
+        gfx_SetColor(0);
+      }
+      if (pickColor) {
+        gfx_Rectangle_NoClip(cursorX, cursorY, 13, 10);
       }
     } else {
-      gfx_SetColor(tinyJumperData[cursorX / 8 - 13 + cursorY - 108]);
-      gfx_Rectangle_NoClip(cursorX, cursorY, 8, 8);
+      drawSquare(cursorX, cursorY, gfx_GetPixel(cursorX + 1, cursorY + 1) + 45 * (gfx_GetPixel(cursorX + 1, cursorY + 1) == 34));
       if (kb_Data[7] && (!keyPressed || timer_Get(1) > 3000)) {
         switch (kb_Data[7]) {
           case kb_Right:
@@ -126,9 +131,12 @@ void spriteMaker(void) {
           case kb_Left:
             cursorX -= 8;
             if (cursorX < 240) {
-              pickColor = true;
-              cursorX = 211;
-              cursorY -= cursorY % 10;
+              cursorX = 240;
+              if (!kb_IsDown(kb_Key2nd) && !kb_IsDown(kb_KeyAlpha)) {
+                pickColor = true;
+                cursorX = 211;
+                cursorY -= cursorY % 10;
+              }
             }
             break;
           case kb_Up:
@@ -146,18 +154,41 @@ void spriteMaker(void) {
         keyPressed = true;
         timer_Set(1, 0);
       }
-      colorNum = tinyJumperData[cursorX / 8 - 13 + cursorY - 108];
-      gfx_SetColor(255);
-      if (colorNum > 131 && colorNum % 8 > 3 && colorNum < 256) {
-        gfx_SetColor(0);
-      }
-      gfx_Rectangle_NoClip(cursorX, cursorY, 8, 8);
-      if (kb_IsDown(kb_KeyMode)) {
+      if (kb_IsDown(kb_Key2nd)) {
+        drawSquare(cursorX, cursorY, playerColor);
+      } else if (kb_IsDown(kb_KeyAlpha)) {
+        drawSquare(cursorX, cursorY, 79);
+      } else if (kb_IsDown(kb_KeyMode)) {
         pickColor = true;
         cursorX = 16;
         cursorY = 90;
       }
+      colorNum = gfx_GetPixel(cursorX + 1, cursorY + 1);
+      gfx_SetColor(255);
+      if (colorNum > 131 && colorNum % 8 > 3) {
+        gfx_SetColor(0);
+      }
+      if (!pickColor) {
+        gfx_Rectangle_NoClip(cursorX, cursorY, 8, 8);
+      }
     }
   } while (!kb_IsDown(kb_KeyEnter) && !kb_IsDown(kb_KeyClear));
+  if (kb_IsDown(kb_KeyEnter)) {
+    for (int8_t i = 0; i < 8; i++) {
+      for (int8_t j = 0; j < 8; j++) {
+        if (gfx_GetPixel(8 * i + 241, 8 * j + 109) == 34) {
+          tinyJumperData[17 + i + 8 * j] = 79;
+        } else {
+          tinyJumperData[17 + i + 8 * j] = gfx_GetPixel(8 * i + 241, 8 * j + 109);
+        }
+        gfx_SetColor(tinyJumperData[17 + i + 8 * j]);
+        gfx_SetPixel(i, j);
+      }
+    }
+  gfx_GetSprite(playerSprites[0], 0, 0);
+  }
   gfx_BlitBuffer();
+  gfx_SetColor(5);
+  gfx_FillRectangle_NoClip(68, 56, 24, 24);
+  gfx_ScaledTransparentSprite_NoClip(playerSprites[0], 68, 56, 3, 3);
 }

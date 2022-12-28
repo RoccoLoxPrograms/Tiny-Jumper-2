@@ -238,7 +238,7 @@ void level6(void) {
     antiGravity(0, 140, 320, 95);
     playerAntiGravity = anyAntiGravity;
     endGoal(8, 39);
-    drawPlayerAndTime(151, 85);
+    drawPlayerAndTime(151, 65);
     endOfFrame();
   }
 }
