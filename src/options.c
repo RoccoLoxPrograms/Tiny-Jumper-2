@@ -361,7 +361,7 @@ void options(void) {
   gfx_FillRectangle_NoClip(0, 0, 320, 40);
   gfx_SetTextBGColor(5);
   gfx_SetTextFGColor(255);
-  gfx_PrintStringXY("Tiny Jumper 2.0     (c) 2023 RoccoLox Programs", 8, 231);
+  gfx_PrintStringXY("Tiny Jumper 2.0     (c) 2024 RoccoLox Programs", 8, 231);
   gfx_PrintStringXY("Customize Player", 23, 215);
   gfx_PrintStringXY("Disable death", 187, 60);
   gfx_PrintStringXY("messages", 187, 70);
