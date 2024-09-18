@@ -10,7 +10,7 @@ static void drawSquare(uint24_t cursorX, uint8_t cursorY, uint8_t color) {
   if (color == 79) {
     gfx_SetColor(255);
     gfx_FillRectangle_NoClip(cursorX, cursorY, 8, 8);
-    gfx_SetColor(34);
+    gfx_SetColor(35);
     uint24_t transparentDrawerX = cursorX;
     for (uint8_t transparentDrawerY = cursorY; transparentDrawerY < cursorY + 8; transparentDrawerY += 2){
       do {
@@ -27,8 +27,8 @@ static void drawSquare(uint24_t cursorX, uint8_t cursorY, uint8_t color) {
 
 void spriteMaker(void) {
   gfx_BlitScreen();
-  gfx_FillScreen(5);
-  gfx_SetColor(21);
+  gfx_FillScreen(6);
+  gfx_SetColor(22);
   gfx_FillRectangle_NoClip(0, 0, 320, 40);
   PrintCenteredText("Customize", 5, 183);
   gfx_PrintStringXY("Make a custom sprite", 90, 29);
@@ -188,7 +188,7 @@ void spriteMaker(void) {
   gfx_GetSprite(playerSprites[0], 0, 0);
   }
   gfx_BlitBuffer();
-  gfx_SetColor(5);
+  gfx_SetColor(6);
   gfx_FillRectangle_NoClip(68, 56, 24, 24);
   gfx_ScaledTransparentSprite_NoClip(playerSprites[0], 68, 56, 3, 3);
 }

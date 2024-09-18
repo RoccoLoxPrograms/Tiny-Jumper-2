@@ -9,8 +9,8 @@
 static void levelSetup(float playerXStart, float playerYStart) {
   playerX = playerXStart;
   playerY = playerYStart;
-  gfx_FillScreen(5);
-  gfx_SetColor(45);
+  gfx_FillScreen(6);
+  gfx_SetColor(46);
   gfx_FillRectangle_NoClip(0, 235, 320, 5);
 }
 
@@ -28,7 +28,7 @@ void level1(void) {
   gfx_FillRectangle_NoClip(34, 90, 252, 5);
   gfx_SetColor(255);
   gfx_FillTriangle_NoClip(252, 179, 256, 171, 260, 179);
-  gfx_SetColor(43);
+  gfx_SetColor(44);
   gfx_FillRectangle_NoClip(144, 133, 39, 4);
   gfx_BlitScreen();
   gfx_SetDrawBuffer();
@@ -65,7 +65,7 @@ void level2(void) {
   gfx_SetColor(255);
   gfx_FillTriangle_NoClip(100, 61, 102, 58, 104, 61);
   gfx_FillTriangle_NoClip(150, 61, 152, 58, 154, 61);
-  gfx_SetColor(43);
+  gfx_SetColor(44);
   gfx_BlitScreen();
   gfx_SetDrawBuffer();
   while (!dead && !quit && !goal) {
@@ -134,7 +134,7 @@ void level4(void) {
   for (int spikeDrawer = 0; spikeDrawer < 288; spikeDrawer += 8) {
     gfx_FillTriangle_NoClip(spikeDrawer, 235, spikeDrawer + 4, 227, spikeDrawer + 8, 235);
   }
-  gfx_SetColor(43);
+  gfx_SetColor(44);
   gfx_FillRectangle_NoClip(290, 20, 4, 215);
   gfx_BlitScreen();
   gfx_SetDrawBuffer();
@@ -177,7 +177,7 @@ void level5(void) {
   gfx_FillRectangle_NoClip(0, 0, 320, 6);
   gfx_SetColor(255);
   gfx_FillTriangle_NoClip(64, 59, 69, 49, 74, 59);
-  gfx_SetColor(43);
+  gfx_SetColor(44);
   gfx_FillRectangle_NoClip(250, 65, 6, 112);
   gfx_BlitScreen();
   gfx_SetDrawBuffer();
@@ -195,7 +195,7 @@ void level5(void) {
     spike(63, 49, 11, 11);
     playerAntiGravity = anyAntiGravity;
     for (int8_t spikeNumber = 0; spikeNumber < 6; spikeNumber++) {
-      gfx_SetColor(5 + 142 * (spikeNumber > 2));
+      gfx_SetColor(6 + 141 * (spikeNumber > 2));
       gfx_FillRectangle_NoClip(spikeXPos[spikeNumber], spikeYPos[spikeNumber] - 8, 9, 9);
       spike(spikeXPos[spikeNumber], spikeYPos[spikeNumber] - 8, 9, 8);
       spikeXPos[spikeNumber] += spikeXSpeed[spikeNumber];
@@ -218,7 +218,7 @@ void level6(void) {
   gfx_FillRectangle_NoClip(0, 95, 60, 5);
   gfx_FillRectangle_NoClip(260, 75, 60, 5);
   gfx_FillRectangle_NoClip(0, 55, 40, 5);
-  gfx_SetColor(43);
+  gfx_SetColor(44);
   gfx_FillRectangle_NoClip(215, 120, 8, 20);
   gfx_FillRectangle_NoClip(151, 75, 8, 20);
   gfx_FillRectangle_NoClip(87, 30, 8, 20);
@@ -251,7 +251,7 @@ void level7(void) {
     gfx_FillRectangle_NoClip(platformDrawer + 80, platformDrawer / 2 + 40, 9, 80);
   }
   gfx_FillRectangle_NoClip(265, 45, 55, 5);
-  gfx_SetColor(43);
+  gfx_SetColor(44);
   gfx_FillRectangle_NoClip(265, 50, 5, 142);
   gfx_FillRectangle_NoClip(157, 59, 3, 50);
   gfx_FillRectangle_NoClip(0, 235, 187, 5);
@@ -273,7 +273,7 @@ void level7(void) {
       case 0: // when the first button has yet to be pressed
         if (gfx_CheckRectangleHotspot(playerX, playerY, 8, 8, 295, 231, 15, 5)) {
           button = 1;
-          gfx_SetColor(5);
+          gfx_SetColor(6);
           gfx_FillRectangle_NoClip(295, 231, 15, 4);
           drawButton(15, 36);
         }
@@ -287,9 +287,9 @@ void level7(void) {
         quicksand(185, 113, 39, 99);
         if (gfx_CheckRectangleHotspot(playerX, playerY, 8, 8, 15, 37, 15, 5)) {
           button = 2;
-          gfx_SetColor(45);
+          gfx_SetColor(46);
           gfx_FillRectangle_NoClip(80, 8, 9, 140);
-          gfx_SetColor(5);
+          gfx_SetColor(6);
           gfx_FillRectangle_NoClip(15, 36, 15, 4);
           gfx_FillRectangle_NoClip(89, 65, 39, 108);
           gfx_FillRectangle_NoClip(128, 144, 48, 29);
@@ -318,7 +318,7 @@ void level8(void) {
   gfx_FillRectangle_NoClip(220, 135, 5, 73);
   gfx_FillRectangle_NoClip(150, 135, 30, 5);
   gfx_FillRectangle_NoClip(0, 0, 320, 5);
-  gfx_SetColor(43);
+  gfx_SetColor(44);
   gfx_FillRectangle_NoClip(60, 235, 135, 5);
   gfx_FillRectangle_NoClip(60, 0, 67, 5);
   gfx_BlitScreen();
@@ -337,7 +337,7 @@ void level8(void) {
     spike(60, 0, 67, 5);
     bouncePad(262, 233, 12, 10.5);
     antiGravity(0, 5, 210, 105);
-    gfx_SetColor(45);
+    gfx_SetColor(46);
     gfx_FillRectangle_NoClip(162, 30, 6, 60);
     rectPlatform(162, 30, 6, 60);
     gfx_FillRectangle_NoClip(97, 25, 12, 6);
@@ -364,10 +364,10 @@ void level9(void) {
     for (uint8_t platformDrawer = 0; platformDrawer < 12; platformDrawer++) {
       platformY[platformDrawer] += screenMovement;
       if (platformY[platformDrawer] > -1 && platformY[platformDrawer] < 210) {
-        gfx_SetColor(5);
+        gfx_SetColor(6);
         gfx_FillRectangle_NoClip(platformX[platformDrawer], platformY[platformDrawer] - 2 - screenMovement, 25 + 125 * (platformDrawer == 11), 6);
         rectPlatform(platformX[platformDrawer], platformY[platformDrawer], 25 + 125 * (platformDrawer == 11), 5);
-        gfx_SetColor(45);
+        gfx_SetColor(46);
         gfx_FillRectangle_NoClip(platformX[platformDrawer], platformY[platformDrawer], 25 + 125 * (platformDrawer == 11), 5);
       }
     }
@@ -377,12 +377,12 @@ void level9(void) {
       }
     }
     if (platformY[8] > -40 && platformY[8] < 210) {
-      gfx_SetColor(5);
+      gfx_SetColor(6);
       gfx_FillRectangle_NoClip(70, platformY[8] + 5 - screenMovement, 35, 5);
       antiGravity(70, platformY[8] + 5, 60, 35);
     }
     if (platformY[11] > 10) {
-      gfx_SetColor(5);
+      gfx_SetColor(6);
       gfx_FillRectangle_NoClip(25, platformY[11] - 16 - screenMovement, 16, 5);
       endGoal(25, platformY[11] - 16);
     }
@@ -393,7 +393,7 @@ void level9(void) {
     } else {
       lavaY -= 0.1;
     }
-    gfx_SetColor(43);
+    gfx_SetColor(44);
     gfx_FillRectangle_NoClip(0, lavaY, 320, 241 - lavaY);
     spike(0, lavaY, 320, 240 - lavaY);
     playerAntiGravity = anyAntiGravity;

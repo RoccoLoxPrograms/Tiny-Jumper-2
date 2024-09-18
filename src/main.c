@@ -64,7 +64,7 @@ static void menu(void) {
   quit = false;
   golds = 0;
   gfx_SetDrawScreen();
-  gfx_FillScreen(5);
+  gfx_FillScreen(6);
   gfx_SetTextFGColor(0);
   for (uint8_t levelDrawerY = 0; levelDrawerY < 3; levelDrawerY++) {
     for (uint8_t levelDrawerX = 0; levelDrawerX < 5; levelDrawerX++) {
@@ -75,12 +75,12 @@ static void menu(void) {
         gfx_SetColor(183);                                           // set the color to very light green
         gfx_SetTextBGColor(183);
       } else if (tinyJumperData[levelDrawerX + 5 * levelDrawerY] <= goldTimes[levelDrawerX + 5 * levelDrawerY]) { // if the level is under the gold time,
-        gfx_SetColor(72);                                                                                         // set the color to yellow (aka "gold" colored)
-        gfx_SetTextBGColor(72);
+        gfx_SetColor(73);                                                                                         // set the color to yellow (aka "gold" colored)
+        gfx_SetTextBGColor(73);
         golds++;
       } else {
-        gfx_SetColor(21); // otherwise, the level is green to show that it's completed
-        gfx_SetTextBGColor(21);
+        gfx_SetColor(22); // otherwise, the level is green to show that it's completed
+        gfx_SetTextBGColor(22);
       }
       gfx_FillRectangle_NoClip(levelDrawerX * 60 + 21, levelDrawerY * 60 + 61, 38, 38);
       if (tinyJumperData[levelDrawerX + 5 * levelDrawerY] <= goldTimes[levelDrawerX + 5 * levelDrawerY] && tinyJumperData[levelDrawerX + 5 * levelDrawerY] != 0) {
@@ -92,16 +92,16 @@ static void menu(void) {
     }
   }
   gfx_SetTextFGColor(255);
-  gfx_SetTextBGColor(5);
+  gfx_SetTextBGColor(6);
   gfx_SetTextTransparentColor(5);
   gfx_PrintStringXY("Press [mode] for options", 77, 47);
   ///////////////////////golds = 15;
   if (golds > 14) {
     gfx_PrintStringXY("BONUS LEVEL!", 118, 227);
   }
-  gfx_SetColor(21);
+  gfx_SetColor(22);
   gfx_FillRectangle_NoClip(0, 0, 320, 40);
-  gfx_SetTextBGColor(21);
+  gfx_SetTextBGColor(22);
   gfx_SetTextFGColor(183);
   PrintCenteredText("Tiny Jumper 2", 5, 183);
   gfx_SetTextScale(1, 1);
@@ -136,14 +136,14 @@ static void menu(void) {
     }
     timer_Set(1, 0);
     // erases the cursor-box
-    gfx_SetColor(5);
+    gfx_SetColor(6);
     if (levelY == 3) {
       gfx_Rectangle_NoClip(116, 225, 89, 11);
     } else {
       gfx_Rectangle_NoClip(levelX * 60 - 40, levelY * 60 + 60, 40, 40);
     }
     // erases the best time/golden time
-    gfx_SetColor(21);
+    gfx_SetColor(22);
     gfx_FillRectangle_NoClip(75, 29, 55, 10);
     gfx_FillRectangle_NoClip(277, 29, 40, 10);
     // decides which direction the cursor should go based on what buttons are being pressed
@@ -211,8 +211,8 @@ int main(void) {
   gfx_Begin();
   fontlib_SetFont(TJFont, 0);
   fontlib_SetTransparency(true);
-  gfx_SetTransparentColor(79);
-  gfx_SetPalette((global_palette + 2), sizeof_global_palette, 0);
+  gfx_SetTransparentColor(80);
+  gfx_SetPalette(global_palette, sizeof_global_palette, 0);
   if (tinyJumperData[82] == 1) {
     invertPalette();
   }

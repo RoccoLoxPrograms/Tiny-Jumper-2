@@ -2,7 +2,7 @@ palettes:
   - name: global_palette
     fixed-entries:
       - color: {index: 0, r: 0, g: 0, b: 0}
-      - color: {index: 7, r: 49, g: 0, b: 123}
+      - color: {index: 8, r: 49, g: 0, b: 123}
       - color: {index: 96, r: 0, g: 0, b: 0}
     images: automatic
 

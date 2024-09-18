@@ -24,7 +24,7 @@ void drawPlayerAndTime(int stringXpos, uint8_t stringYpos) {
     playerYVelocity = 0;
     playerGrounded = 3;
   }
-  gfx_SetColor(5);
+  gfx_SetColor(6);
   gfx_FillRectangle(stringXpos, stringYpos, 40, 10);
   if (tinyJumperData[16] < 256) {
     gfx_SetColor(tinyJumperData[16]);
@@ -37,7 +37,7 @@ void drawPlayerAndTime(int stringXpos, uint8_t stringYpos) {
     }
   }
   gfx_SetTextFGColor(255);
-  gfx_SetTextBGColor(5);
+  gfx_SetTextBGColor(6);
   gfx_PrintStringXY(strTemp, stringXpos, stringYpos);
   if (gfx_CheckRectangleHotspot(playerX, playerY, 8, 8, stringXpos, stringYpos, 36, 10)) {
     gfx_PrintStringXY(strTemp, stringXpos, stringYpos + 10);
@@ -116,8 +116,8 @@ void endGoal(float x, float y) {
   // this controls how the goal's colors change
   goalColor -= timer % 2;
   for (uint8_t rectOffset = 0; rectOffset < 4; rectOffset++) {
-    if (goalColor > 23) {
-      goalColor = 20;
+    if (goalColor > 24) {
+      goalColor = 21;
     }
     gfx_SetColor(goalColor);
     gfx_FillRectangle_NoClip(x + 2 * rectOffset, y + 2 * rectOffset, 16 - 4 * rectOffset, 16 - 4 * rectOffset);
@@ -151,7 +151,7 @@ void antiGravity(float x, float y, float width, float height) {
 }
 
 void quicksand(float x, float y, float width, float height) {
-  gfx_SetColor(70);
+  gfx_SetColor(71);
   gfx_FillRectangle_NoClip(x, y, width, height);
   if (gfx_CheckRectangleHotspot(x, y, width, height, playerX, playerY, 8, 8)) {
     playerXVelocity /= 3;
@@ -201,7 +201,7 @@ void player(void) {
   } else {
     playerYVelocity *= 1 - .6 * playerQuicksand;
   }
-  gfx_SetColor(5);
+  gfx_SetColor(6);
   gfx_FillRectangle_NoClip(playerX, playerY, 8, 8); // erase the player before moving it
   // the player moves according to its velocities
   playerX += playerXVelocity;
