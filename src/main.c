@@ -212,7 +212,7 @@ int main(void) {
   fontlib_SetFont(TJFont, 0);
   fontlib_SetTransparency(true);
   gfx_SetTransparentColor(79);
-  gfx_SetPalette(global_palette, sizeof_global_palette, 0);
+  gfx_SetPalette((global_palette + 2), sizeof_global_palette, 0);
   if (tinyJumperData[82] == 1) {
     invertPalette();
   }

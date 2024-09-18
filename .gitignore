@@ -4,4 +4,5 @@ obj/
 src/gfx/*.c
 src/gfx/*.h
 src/gfx/*.out
+src/gfx/convimg.yaml.lst
 images/
