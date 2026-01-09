@@ -9,6 +9,28 @@
 extern "C" {
 #endif
 
+enum {
+    COLOR_BLACK,
+    COLOR_TRANSP,
+    COLOR_DARK_PURPLE,
+    COLOR_PURPLE,
+    COLOR_LIGHT_PURPLE,
+    COLOR_RED,
+    COLOR_PINK,
+    COLOR_TAN,
+    COLOR_GRAY,
+    COLOR_LIME,
+    COLOR_GOAL_1,
+    COLOR_GOAL_2,
+    COLOR_GOAL_3,
+    COLOR_GOAL_4,
+    COLOR_OLIVE = COLOR_GOAL_4,
+    COLOR_LIGHT_GREEN,
+    COLOR_LIGHT_GRAY,
+    COLOR_GOLD,
+    COLOR_WHITE = 255,
+};
+
 // these are the player's variables and many states of existence
 extern float playerX;
 extern float playerY;
@@ -35,7 +57,6 @@ extern uint8_t levelX;
 extern uint8_t levelY;
 extern unsigned int tinyJumperData[84];
 extern uint8_t golds;
-extern uint8_t goalColor;
 
 extern const unsigned int goldTimes[16];
 extern gfx_sprite_t *playerSprites[7];

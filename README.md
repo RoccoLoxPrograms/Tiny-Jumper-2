@@ -25,6 +25,6 @@ Sequel to the classic [Tiny Jumper](https://github.com/RoccoLoxPrograms/Tiny-Jum
 
 Special thanks to [TIny_Hacker](https://github.com/TIny-Hacker) for the sprites and palette colors.
 
-©️ 2022 RoccoLox Programs
+©️ 2022 - 2026 RoccoLox Programs
 
 License available [here](https://github.com/RoccoLoxPrograms/Tiny-Jumper-2/blob/main/LICENSE)

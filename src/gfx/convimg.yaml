@@ -1,17 +1,31 @@
 palettes:
   - name: global_palette
     fixed-entries:
-      - color: {index: 0, r: 0, g: 0, b: 0}
-      - color: {index: 8, r: 49, g: 0, b: 123}
-      - color: {index: 96, r: 0, g: 0, b: 0}
+      - color: {index: 0, hex: "#000000"}
+      - color: {index: 1, hex: "#F7DBEF"}
+      - color: {index: 2, hex: "#21184A"}
+      - color: {index: 3, hex: "#31007B"}
+      - color: {index: 4, hex: "#94719C"}
+      - color: {index: 5, hex: "#8C1C18"}
+      - color: {index: 6, hex: "#FF3CCE"}
+      - color: {index: 7, hex: "#D6AE39"}
+      - color: {index: 8, hex: "#8C8A8C"}
+      - color: {index: 9, hex: "#A5F739"}
+      - color: {index: 10, hex: "#4AFF6B"}
+      - color: {index: 11, hex: "#52C7AD"}
+      - color: {index: 12, hex: "#52AA6B"}
+      - color: {index: 13, hex: "#528A63"}
+      - color: {index: 14, hex: "#B5F7BD"}
+      - color: {index: 15, hex: "#B5B6AD"}
+      - color: {index: 16, hex: "#E7BE39"}
+      - color: {index: 96, hex: "#000000"}
     images: automatic
 
 converts:
   - name: sprites
     palette: global_palette
-    transparent-color-index: 0
+    transparent-color-index: 1
     images:
-      - TinyJumperPalette.png
       - Flipped.png
       - RoccoLoxSkin.png
       - MushroomSkin.png

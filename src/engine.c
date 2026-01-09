@@ -24,7 +24,7 @@ void drawPlayerAndTime(int stringXpos, uint8_t stringYpos) {
     playerYVelocity = 0;
     playerGrounded = 3;
   }
-  gfx_SetColor(6);
+  gfx_SetColor(COLOR_DARK_PURPLE);
   gfx_FillRectangle(stringXpos, stringYpos, 40, 10);
   if (tinyJumperData[16] < 256) {
     gfx_SetColor(tinyJumperData[16]);
@@ -36,8 +36,8 @@ void drawPlayerAndTime(int stringXpos, uint8_t stringYpos) {
       gfx_TransparentSprite_NoClip(playerSprites[tinyJumperData[16] - 256], playerX, playerY);
     }
   }
-  gfx_SetTextFGColor(255);
-  gfx_SetTextBGColor(6);
+  gfx_SetTextFGColor(COLOR_WHITE);
+  gfx_SetTextBGColor(COLOR_DARK_PURPLE);
   gfx_PrintStringXY(strTemp, stringXpos, stringYpos);
   if (gfx_CheckRectangleHotspot(playerX, playerY, 8, 8, stringXpos, stringYpos, 36, 10)) {
     gfx_PrintStringXY(strTemp, stringXpos, stringYpos + 10);
@@ -50,7 +50,7 @@ void endOfFrame(void) {
 }
 
 void drawButton(uint24_t x, uint8_t y) {
-  gfx_SetColor(167);
+  gfx_SetColor(COLOR_LIME);
   gfx_FillRectangle_NoClip(x, y + 2, 15, 3);
   gfx_HorizLine_NoClip(x + 1, y + 1, 13);
   gfx_HorizLine_NoClip(x + 3, y, 9);
@@ -112,12 +112,13 @@ void spike(float x, float y, float width, float height) {
 
 // the looks and collision for the end goal
 void endGoal(float x, float y) {
+  static uint8_t goalColor = COLOR_GOAL_1;
   if (gfx_CheckRectangleHotspot(playerX, playerY, 8, 8, x, y, 16, 16)) goal = true;
   // this controls how the goal's colors change
   goalColor -= timer % 2;
   for (uint8_t rectOffset = 0; rectOffset < 4; rectOffset++) {
-    if (goalColor > 24) {
-      goalColor = 21;
+    if (goalColor > COLOR_GOAL_4) {
+      goalColor = COLOR_GOAL_1;
     }
     gfx_SetColor(goalColor);
     gfx_FillRectangle_NoClip(x + 2 * rectOffset, y + 2 * rectOffset, 16 - 4 * rectOffset, 16 - 4 * rectOffset);
@@ -132,14 +133,14 @@ void bouncePad(float x, float y, float width, float bounceSpeed) {
     playerYVelocity = -bounceSpeed;
   }
   // re-draws the bouncepad
-  gfx_SetColor(249);
+  gfx_SetColor(COLOR_PINK);
   gfx_FillRectangle_NoClip(x, y, width, 3);
 }
 
 // the anti-gravity!
 void antiGravity(float x, float y, float width, float height) {
   // draws the anti-gravity
-  gfx_SetColor(147);
+  gfx_SetColor(COLOR_LIGHT_PURPLE);
   gfx_FillRectangle_NoClip(x, y, width, height);
   // collision and stuff for the anti-gravity
   if (gfx_CheckRectangleHotspot(x, y, width, height, playerX, playerY, 8, 8)) {
@@ -151,7 +152,7 @@ void antiGravity(float x, float y, float width, float height) {
 }
 
 void quicksand(float x, float y, float width, float height) {
-  gfx_SetColor(71);
+  gfx_SetColor(COLOR_TAN);
   gfx_FillRectangle_NoClip(x, y, width, height);
   if (gfx_CheckRectangleHotspot(x, y, width, height, playerX, playerY, 8, 8)) {
     playerXVelocity /= 3;
@@ -201,7 +202,7 @@ void player(void) {
   } else {
     playerYVelocity *= 1 - .6 * playerQuicksand;
   }
-  gfx_SetColor(6);
+  gfx_SetColor(COLOR_DARK_PURPLE);
   gfx_FillRectangle_NoClip(playerX, playerY, 8, 8); // erase the player before moving it
   // the player moves according to its velocities
   playerX += playerXVelocity;
@@ -232,95 +233,95 @@ void deadScreen(void) {
   if (tinyJumperData[81] == 0) {
     switch (randDeathMsg) {
       case 0:
-        PrintCenteredText("Ouch. You died.", 70, 255);
+        PrintCenteredText("Ouch. You died.", 70, COLOR_WHITE);
         break;
       case 1:
-        PrintCenteredText("That looked like", 70, 255);
-        PrintCenteredText("it hurt.", 92, 255);
+        PrintCenteredText("That looked like", 70, COLOR_WHITE);
+        PrintCenteredText("it hurt.", 92, COLOR_WHITE);
         break;
       case 2:
-        PrintCenteredText("Tu es mort...", 70, 255);
-        PrintCenteredText("encore.", 92, 255);
+        PrintCenteredText("Tu es mort...", 70, COLOR_WHITE);
+        PrintCenteredText("encore.", 92, COLOR_WHITE);
         break;
       case 3:
-        PrintCenteredText("That death...", 70, 255);
-        PrintCenteredText("was glorious.", 92, 255);
+        PrintCenteredText("That death...", 70, COLOR_WHITE);
+        PrintCenteredText("was glorious.", 92, COLOR_WHITE);
         break;
       case 4:
-        PrintCenteredText("Estas muerto...", 70, 255);
-        PrintCenteredText("de nuevo.", 92, 255);
+        PrintCenteredText("Estas muerto...", 70, COLOR_WHITE);
+        PrintCenteredText("de nuevo.", 92, COLOR_WHITE);
         break;
       case 5:
-        PrintCenteredText("Were you", 70, 255);
-        PrintCenteredText("even trying?", 92, 255);
+        PrintCenteredText("Were you", 70, COLOR_WHITE);
+        PrintCenteredText("even trying?", 92, COLOR_WHITE);
         break;
       case 6:
-        PrintCenteredText("#$&...*+", 70, 255); // displays japanese characters for "shinda...mata"
+        PrintCenteredText("#$&...*+", 70, COLOR_WHITE); // displays japanese characters for "shinda...mata"
         break;
       case 7:
-        PrintCenteredText("Don't die!", 70, 255);
-        PrintCenteredText("Oops, too late.", 92, 255);
+        PrintCenteredText("Don't die!", 70, COLOR_WHITE);
+        PrintCenteredText("Oops, too late.", 92, COLOR_WHITE);
         break;
       case 8:
-        PrintCenteredText("So disappointing.", 70, 255);
+        PrintCenteredText("So disappointing.", 70, COLOR_WHITE);
         break;
       case 9:
-        PrintCenteredText("You died.", 70, 255);
-        PrintCenteredText("But it was", 92, 255);
-        PrintCenteredText("just a dream.", 114, 255);
+        PrintCenteredText("You died.", 70, COLOR_WHITE);
+        PrintCenteredText("But it was", 92, COLOR_WHITE);
+        PrintCenteredText("just a dream.", 114, COLOR_WHITE);
         break;
       case 10:
-        PrintCenteredText("You could've died", 70, 255);
-        PrintCenteredText("better than that.", 92, 255);
+        PrintCenteredText("You could've died", 70, COLOR_WHITE);
+        PrintCenteredText("better than that.", 92, COLOR_WHITE);
         break;
       case 11:
-        PrintCenteredText("I'm getting a", 70, 255);
-        PrintCenteredText("bit tired of", 92, 255);
-        PrintCenteredText("respawning you.", 114, 255);
+        PrintCenteredText("I'm getting a", 70, COLOR_WHITE);
+        PrintCenteredText("bit tired of", 92, COLOR_WHITE);
+        PrintCenteredText("respawning you.", 114, COLOR_WHITE);
         break;
       case 12:
-        PrintCenteredText("Why would you go", 70, 255);
-        PrintCenteredText("and die like that?", 92, 255); 
+        PrintCenteredText("Why would you go", 70, COLOR_WHITE);
+        PrintCenteredText("and die like that?", 92, COLOR_WHITE); 
         break;
       case 13:
-        PrintCenteredText("Have you given up?", 70, 255);
+        PrintCenteredText("Have you given up?", 70, COLOR_WHITE);
         break;
       case 14:
-        PrintCenteredText("Somebody in", 70, 255);
-        PrintCenteredText("this vicinity", 92, 255);
-        PrintCenteredText("died recently.", 114, 255);
+        PrintCenteredText("Somebody in", 70, COLOR_WHITE);
+        PrintCenteredText("this vicinity", 92, COLOR_WHITE);
+        PrintCenteredText("died recently.", 114, COLOR_WHITE);
         break;
       case 15:
-        PrintCenteredText("That death will be", 70, 255);
-        PrintCenteredText("our little secret.", 92, 255);
+        PrintCenteredText("That death will be", 70, COLOR_WHITE);
+        PrintCenteredText("our little secret.", 92, COLOR_WHITE);
         break;
       case 16:
-        PrintCenteredText("Could you do", 70, 255);
-        PrintCenteredText("that again?", 92, 255);
-        PrintCenteredText("I wasn't looking.", 114, 255);
+        PrintCenteredText("Could you do", 70, COLOR_WHITE);
+        PrintCenteredText("that again?", 92, COLOR_WHITE);
+        PrintCenteredText("I wasn't looking.", 114, COLOR_WHITE);
         break;
       case 17:
-        PrintCenteredText("You're deader", 70, 255);
-        PrintCenteredText("than my", 92, 255);
-        PrintCenteredText("childhood dog.", 114, 255);
+        PrintCenteredText("You're deader", 70, COLOR_WHITE);
+        PrintCenteredText("than my", 92, COLOR_WHITE);
+        PrintCenteredText("childhood dog.", 114, COLOR_WHITE);
         break;
       case 18:
-        PrintCenteredText("You meant to do", 70, 255);
-        PrintCenteredText("that, didn't you?", 92, 255);
+        PrintCenteredText("You meant to do", 70, COLOR_WHITE);
+        PrintCenteredText("that, didn't you?", 92, COLOR_WHITE);
         break;
       case 19:
-        PrintCenteredText("M4n that death", 70, 255);
-        PrintCenteredText("wuz stoopid. C4n u", 92, 255);
-        PrintCenteredText("3v3n r34d this?", 114, 255);
+        PrintCenteredText("M4n that death", 70, COLOR_WHITE);
+        PrintCenteredText("wuz stoopid. C4n u", 92, COLOR_WHITE);
+        PrintCenteredText("3v3n r34d this?", 114, COLOR_WHITE);
         msleep(400);
         break;
       case 20:
-        PrintCenteredText("I wonder if people", 70, 255);
-        PrintCenteredText("even read these.", 92, 255);
+        PrintCenteredText("I wonder if people", 70, COLOR_WHITE);
+        PrintCenteredText("even read these.", 92, COLOR_WHITE);
         break;
       case 21:
-        PrintCenteredText("Dying is for", 70, 255);
-        PrintCenteredText("noobs (get pwned!)", 92, 255);
+        PrintCenteredText("Dying is for", 70, COLOR_WHITE);
+        PrintCenteredText("noobs (get pwned!)", 92, COLOR_WHITE);
         break;
       default:
         PrintCenteredText("More dark humor.", 70, 51);
@@ -343,18 +344,18 @@ void deadScreen(void) {
 void goalScreen(void) {
   gfx_SetDrawScreen();
   gfx_ZeroScreen();
-  PrintCenteredText("Wow, you did it.", 50, 255);
-  PrintCenteredText("Your time was:", 72, 255);
-  PrintCenteredText(strTemp, 94, 255);
+  PrintCenteredText("Wow, you did it.", 50, COLOR_WHITE);
+  PrintCenteredText("Your time was:", 72, COLOR_WHITE);
+  PrintCenteredText(strTemp, 94, COLOR_WHITE);
   // This checks to see if you got a better time, or if you beat the gold time. If invincible mode is active, it won't
   if ((timer < tinyJumperData[level - 1] || tinyJumperData[level - 1] == 0) && !invincibleMode) {
     // if you've beaten the gold time for the first time, display this
     if ((tinyJumperData[level - 1] > goldTimes[level - 1] || tinyJumperData[level - 1] == 0) && timer <= goldTimes[level - 1]) {
-      PrintCenteredText("You beat the", 136, 255);
-      PrintCenteredText("gold time!", 158, 255);
+      PrintCenteredText("You beat the", 136, COLOR_WHITE);
+      PrintCenteredText("gold time!", 158, COLOR_WHITE);
     } else { // otherwise, you still beat your time, so display this
-      PrintCenteredText("You got", 136, 255);
-      PrintCenteredText("a personal best!", 158, 255);
+      PrintCenteredText("You got", 136, COLOR_WHITE);
+      PrintCenteredText("a personal best!", 158, COLOR_WHITE);
     }
     // unlocks the next level - but only if it is locked to begin with. Locked levels have a time of 16,777,215 (or 0xFFFFFF). Unlocked but uncompleted levels have a time of 0.
     if (level != 15 && tinyJumperData[level] == 0xFFFFFF) {
@@ -363,8 +364,8 @@ void goalScreen(void) {
     tinyJumperData[level - 1] = timer; // save that best time permanently (or at least until you beat it again)
   }
   // displays what level you're playing
-  gfx_SetTextBGColor(0);
-  gfx_SetTextFGColor(255);
+  gfx_SetTextBGColor(COLOR_BLACK);
+  gfx_SetTextFGColor(COLOR_WHITE);
   gfx_PrintStringXY("Level ", 1, 232);
   gfx_PrintInt(level, 1);
   // if invincible mode is active, display this

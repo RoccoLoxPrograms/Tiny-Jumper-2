@@ -16,7 +16,7 @@
 static void lockedBox(unsigned int x, uint8_t y, unsigned int width, uint8_t height) {
   gfx_SetColor(222);
   gfx_FillRectangle_NoClip(x, y, width, height);
-  gfx_SetColor(0);
+  gfx_SetColor(COLOR_BLACK);
   gfx_Rectangle(x, y, width, height);
   gfx_Line_NoClip(x, y, x + (width - 1), y + (height - 1));
   gfx_Line_NoClip(x, y + (height - 1), x + (width - 1), y);
@@ -24,14 +24,14 @@ static void lockedBox(unsigned int x, uint8_t y, unsigned int width, uint8_t hei
 
 static void settingsSwitch(unsigned int x, uint8_t y, bool turnedOn) {
   if (!turnedOn) {
-    gfx_SetColor(46);
+    gfx_SetColor(COLOR_GRAY);
     gfx_FillRectangle_NoClip(x, y, 16, 9);
-    gfx_SetColor(255);
+    gfx_SetColor(COLOR_WHITE);
     gfx_FillRectangle_NoClip(x + 1, y + 1, 7, 7);
   } else {
     gfx_SetColor(37);
     gfx_FillRectangle_NoClip(x, y, 16, 9);
-    gfx_SetColor(255);
+    gfx_SetColor(COLOR_WHITE);
     gfx_FillRectangle_NoClip(x + 8, y + 1, 7, 7);
   }
 }
@@ -41,7 +41,7 @@ static void confirmReset(void) {
   bool keyPressed = false;
   int selectorX = 211;
   uint8_t selectorWidth = 19;
-  gfx_SetColor(6);
+  gfx_SetColor(COLOR_DARK_PURPLE);
   gfx_Rectangle_NoClip(198, 178, 82, 11);
   gfx_PrintStringXY("NO     YES", 213, 191);
   while (kb_AnyKey());
@@ -58,7 +58,7 @@ static void confirmReset(void) {
     }
     if (kb_Data[7] && !keyPressed) {
       keyPressed = true;
-      gfx_SetColor(6);
+      gfx_SetColor(COLOR_DARK_PURPLE);
       gfx_Rectangle_NoClip(selectorX, 189, selectorWidth, 11);
       switch (kb_Data[7]) {
         case kb_Left:
@@ -80,13 +80,13 @@ static void confirmReset(void) {
         default:
           break;
       }
-      gfx_SetColor(22);
+      gfx_SetColor(COLOR_OLIVE);
       gfx_Rectangle_NoClip(selectorX, 189, selectorWidth, 11);
     }
   }
-  gfx_SetColor(6);
+  gfx_SetColor(COLOR_DARK_PURPLE);
   gfx_FillRectangle_NoClip(211, 189, 58, 11);
-  gfx_SetColor(22);
+  gfx_SetColor(COLOR_OLIVE);
   gfx_Rectangle_NoClip(198, 178, 82, 11);
   while (kb_AnyKey());
 }
@@ -113,12 +113,12 @@ static void customizePlayer(void) {
     cursorX = 16 + 8 * (playerColor % 16);
     cursorY = 49 + 7 * floor(playerColor / 16);
   }
-  gfx_SetColor(6);
+  gfx_SetColor(COLOR_DARK_PURPLE);
   gfx_Rectangle_NoClip(21, 213, 119, 12);
   gfx_BlitScreen();
-  gfx_SetColor(255);
+  gfx_SetColor(COLOR_WHITE);
   if (playerColor > 131 && playerColor % 8 > 3 && playerColor < 256) {
-    gfx_SetColor(0);
+    gfx_SetColor(COLOR_BLACK);
   }
   gfx_Rectangle_NoClip(cursorX, cursorY, width, height);
   while (kb_AnyKey());
@@ -130,7 +130,7 @@ static void customizePlayer(void) {
     }
     if (kb_IsDown(kb_KeyClear)) {
       gfx_BlitBuffer();
-      gfx_SetColor(22);
+      gfx_SetColor(COLOR_OLIVE);
       gfx_Rectangle_NoClip(21, 213, 119, 12);
       while (kb_AnyKey());
       return;
@@ -315,9 +315,9 @@ static void customizePlayer(void) {
         }
       }
       gfx_BlitRectangle(gfx_buffer, 16, 84, 128, 125);
-      gfx_SetColor(255);
+      gfx_SetColor(COLOR_WHITE);
       if (playerColor > 131 && playerColor % 8 > 3 && playerColor < 256) {
-        gfx_SetColor(0);
+        gfx_SetColor(COLOR_BLACK);
       }
       gfx_Rectangle(cursorX, cursorY, width, height);
       if (!keyPressed) {
@@ -327,7 +327,7 @@ static void customizePlayer(void) {
       }
       keyPressed = true;
       timer_Set(1, 0);
-      gfx_SetColor(6);
+      gfx_SetColor(COLOR_DARK_PURPLE);
       gfx_FillRectangle_NoClip(68, 56, 24, 24);
       if (playerColor < 256) {
         gfx_SetColor(playerColor);
@@ -339,7 +339,7 @@ static void customizePlayer(void) {
   }
   gfx_BlitRectangle(gfx_buffer, 16, 84, 128, 125);
   tinyJumperData[16] = playerColor;
-  gfx_SetColor(22);
+  gfx_SetColor(COLOR_OLIVE);
   gfx_Rectangle_NoClip(21, 213, 119, 12);
   if (playerColor == 256) {
     spriteMaker();
@@ -356,12 +356,16 @@ void options(void) {
   uint8_t selectorWidth = 20;
   uint8_t selectorHeight = 13;
   gfx_SetDrawScreen();
-  gfx_FillScreen(6);
-  gfx_SetColor(22);
+  gfx_FillScreen(COLOR_DARK_PURPLE);
+  gfx_SetColor(COLOR_OLIVE);
   gfx_FillRectangle_NoClip(0, 0, 320, 40);
-  gfx_SetTextBGColor(6);
-  gfx_SetTextFGColor(255);
-  gfx_PrintStringXY("Tiny Jumper 2.0     (c) 2024 RoccoLox Programs", 8, 231);
+  gfx_SetTextBGColor(COLOR_OLIVE);
+  gfx_SetTextFGColor(COLOR_LIGHT_GREEN);
+  gfx_PrintStringXY("Total gold times: ", 96, 29);
+  gfx_PrintInt(golds, 2);
+  gfx_SetTextBGColor(COLOR_DARK_PURPLE);
+  gfx_SetTextFGColor(COLOR_WHITE);
+  gfx_PrintStringXY("Tiny Jumper 2.0     (c) 2026 RoccoLox Programs", 8, 231);
   gfx_PrintStringXY("Customize Player", 23, 215);
   gfx_PrintStringXY("Disable death", 187, 60);
   gfx_PrintStringXY("messages", 187, 70);
@@ -377,18 +381,16 @@ void options(void) {
     gfx_PrintString(strTemp);
     settingsSwitch(166, 150, speedrunnerMode);
   }
-  gfx_SetTextFGColor(183);
+  gfx_SetTextFGColor(COLOR_LIGHT_GREEN);
   gfx_PrintStringXY("Your Player", 41, 44);
   gfx_PrintStringXY("Game Settings", 193, 44);
-  gfx_PrintStringXY("Total gold times: ", 96, 29);
-  gfx_PrintInt(golds, 2);
   if (golds > 14) {
-    gfx_SetTextFGColor(8);
+    gfx_SetTextFGColor(COLOR_PURPLE);
     gfx_PrintStringXY("Originally created", 177, 200);
     gfx_PrintStringXY("by KRoD", 215, 210);
   }
-  PrintCenteredText("Options", 5, 183);
-  gfx_SetColor(255);
+  PrintCenteredText("Options", 5, COLOR_LIGHT_GREEN);
+  gfx_SetColor(COLOR_WHITE);
   gfx_HorizLine_NoClip(5, 229, 311);
   gfx_VertLine_NoClip(160, 43, 183);
   if (tinyJumperData[16] < 256) {
@@ -398,7 +400,7 @@ void options(void) {
     gfx_ScaledTransparentSprite_NoClip(playerSprites[tinyJumperData[16] - 256], 68, 56, 3, 3);
   }
   if (golds > 4) {
-    gfx_SetColor(22);
+    gfx_SetColor(COLOR_OLIVE);
     gfx_FillRectangle_NoClip(16, 84, 8, 7);
     do {
       for (uint8_t paletteX = 16; paletteX < 144; paletteX += 8) {
@@ -410,7 +412,7 @@ void options(void) {
     } while (colorNum);
   } else {
     lockedBox(16, 84, 128, 77);
-    gfx_SetTextFGColor(0);
+    gfx_SetTextFGColor(COLOR_BLACK);
     gfx_PrintStringXY("5 golds", 56, 89);
   }
   if (golds > 9) {
@@ -418,7 +420,7 @@ void options(void) {
       gfx_ScaledTransparentSprite_NoClip(playerSprites[displaySprites], 18 * displaySprites + 18, 174, 2, 2);
     }
   } else {
-    gfx_SetTextFGColor(255);
+    gfx_SetTextFGColor(COLOR_WHITE);
     gfx_PrintStringXY("10 golds", 53, 164);
     for (uint8_t displayBox = 0; displayBox < 5; displayBox++) {
       lockedBox(18 * displayBox + 36, 174, 16, 16);
@@ -427,8 +429,8 @@ void options(void) {
   settingsSwitch(166, 60, tinyJumperData[81]);
   settingsSwitch(166, 90, tinyJumperData[82]);
   settingsSwitch(166, 120, invincibleMode);
-  gfx_SetTextFGColor(255);
-  gfx_SetColor(22);
+  gfx_SetTextFGColor(COLOR_WHITE);
+  gfx_SetColor(COLOR_OLIVE);
   gfx_Rectangle_NoClip(selectorX, selectorY, selectorWidth, selectorHeight);
   while (kb_AnyKey());
   while (!quit) {
@@ -474,7 +476,7 @@ void options(void) {
     }
     if (kb_Data[7] && (!keyPressed || timer_Get(1) > 3000)) {
       if (!(kb_IsDown(kb_KeyLeft) && selectorX == 21) && !(kb_IsDown(kb_KeyRight) && selectorX == 164)) {
-        gfx_SetColor(6);
+        gfx_SetColor(COLOR_DARK_PURPLE);
         gfx_Rectangle_NoClip(selectorX, selectorY, selectorWidth, selectorHeight);
       }
       switch (kb_Data[7]) {
@@ -541,7 +543,7 @@ void options(void) {
         default:
           break;
       }
-      gfx_SetColor(22);
+      gfx_SetColor(COLOR_OLIVE);
       gfx_Rectangle_NoClip(selectorX, selectorY, selectorWidth, selectorHeight);
       if (!keyPressed) {
         while (timer_Get(1) < 9000 && kb_Data[7]) {
@@ -560,7 +562,7 @@ void options(void) {
   level = speedrunnerMode;
   if (speedrunnerMode) {
     gfx_ZeroScreen();
-    PrintCenteredText("Start speedrun in", 70, 255);
+    PrintCenteredText("Start speedrun in", 70, COLOR_WHITE);
     msleep(600);
     fontlib_SetCursorPosition(115, 102);
     fontlib_DrawGlyph(51);

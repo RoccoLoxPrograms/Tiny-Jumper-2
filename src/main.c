@@ -38,18 +38,17 @@ uint8_t levelX = 1;
 uint8_t levelY = 0;
 unsigned int tinyJumperData[84];
 uint8_t golds = 0;
-uint8_t goalColor = 20;
 
 const unsigned int goldTimes[16] = {288, 300, 405, 360, 327, 405, 750, 201, 360, 1000, 1000, 1000, 1000, 1000, 1000, 1000};
 
 static void endSpeedrun(void) {
   gfx_SetDrawScreen();
   gfx_ZeroScreen();
-  PrintCenteredText("Dang, doggy, you", 50, 255);
-  PrintCenteredText("finished that", 72, 255);
-  PrintCenteredText("speedrun! Your", 94, 255);
-  PrintCenteredText("final time was:", 116, 255);
-  PrintCenteredText(strTemp, 138, 255);
+  PrintCenteredText("Dang, doggy, you", 50, COLOR_WHITE);
+  PrintCenteredText("finished that", 72, COLOR_WHITE);
+  PrintCenteredText("speedrun! Your", 94, COLOR_WHITE);
+  PrintCenteredText("final time was:", 116, COLOR_WHITE);
+  PrintCenteredText(strTemp, 138, COLOR_WHITE);
   tinyJumperData[83] = timer;
   goal = false;
   while (kb_AnyKey());
@@ -64,23 +63,23 @@ static void menu(void) {
   quit = false;
   golds = 0;
   gfx_SetDrawScreen();
-  gfx_FillScreen(6);
-  gfx_SetTextFGColor(0);
+  gfx_FillScreen(COLOR_DARK_PURPLE);
+  gfx_SetTextFGColor(COLOR_BLACK);
   for (uint8_t levelDrawerY = 0; levelDrawerY < 3; levelDrawerY++) {
     for (uint8_t levelDrawerX = 0; levelDrawerX < 5; levelDrawerX++) {
       if (tinyJumperData[levelDrawerX + 5 * levelDrawerY] == 0xFFFFFF) { // if the level is locked,
-        gfx_SetColor(181);                                            // set the color to gray
-        gfx_SetTextBGColor(181);
+        gfx_SetColor(COLOR_LIGHT_GRAY);                                            // set the color to gray
+        gfx_SetTextBGColor(COLOR_LIGHT_GRAY);
       } else if (!tinyJumperData[levelDrawerX + 5 * levelDrawerY]) { // if the level is incomplete,
-        gfx_SetColor(183);                                           // set the color to very light green
-        gfx_SetTextBGColor(183);
+        gfx_SetColor(COLOR_LIGHT_GREEN);                                           // set the color to very light green
+        gfx_SetTextBGColor(COLOR_LIGHT_GREEN);
       } else if (tinyJumperData[levelDrawerX + 5 * levelDrawerY] <= goldTimes[levelDrawerX + 5 * levelDrawerY]) { // if the level is under the gold time,
-        gfx_SetColor(73);                                                                                         // set the color to yellow (aka "gold" colored)
-        gfx_SetTextBGColor(73);
+        gfx_SetColor(COLOR_GOLD);                                                                                         // set the color to yellow (aka "gold" colored)
+        gfx_SetTextBGColor(COLOR_GOLD);
         golds++;
       } else {
-        gfx_SetColor(22); // otherwise, the level is green to show that it's completed
-        gfx_SetTextBGColor(22);
+        gfx_SetColor(COLOR_OLIVE); // otherwise, the level is green to show that it's completed
+        gfx_SetTextBGColor(COLOR_OLIVE);
       }
       gfx_FillRectangle_NoClip(levelDrawerX * 60 + 21, levelDrawerY * 60 + 61, 38, 38);
       if (tinyJumperData[levelDrawerX + 5 * levelDrawerY] <= goldTimes[levelDrawerX + 5 * levelDrawerY] && tinyJumperData[levelDrawerX + 5 * levelDrawerY] != 0) {
@@ -91,19 +90,19 @@ static void menu(void) {
       gfx_PrintStringXY(strTemp, levelDrawerX * 60 + 40 - gfx_GetStringWidth(strTemp) / 2, levelDrawerY * 60 + 76);
     }
   }
-  gfx_SetTextFGColor(255);
-  gfx_SetTextBGColor(6);
+  gfx_SetTextFGColor(COLOR_WHITE);
+  gfx_SetTextBGColor(COLOR_DARK_PURPLE);
   gfx_SetTextTransparentColor(5);
   gfx_PrintStringXY("Press [mode] for options", 77, 47);
   golds = 15;
   if (golds > 14) {
     gfx_PrintStringXY("BONUS LEVEL!", 118, 227);
   }
-  gfx_SetColor(22);
+  gfx_SetColor(COLOR_OLIVE);
   gfx_FillRectangle_NoClip(0, 0, 320, 40);
-  gfx_SetTextBGColor(22);
-  gfx_SetTextFGColor(183);
-  PrintCenteredText("Tiny Jumper 2", 5, 183);
+  gfx_SetTextBGColor(COLOR_OLIVE);
+  gfx_SetTextFGColor(COLOR_LIGHT_GREEN);
+  PrintCenteredText("Tiny Jumper 2", 5, COLOR_LIGHT_GREEN);
   gfx_SetTextScale(1, 1);
   gfx_PrintStringXY("Best time:", 6, 29);
   gfx_PrintStringXY("Gold time:", 215, 29);
@@ -112,7 +111,7 @@ static void menu(void) {
   while (kb_AnyKey());
   while (!quit && !level) {
     // displays the cursor
-    gfx_SetColor(255);
+    gfx_SetColor(COLOR_WHITE);
     if (levelY == 3) {
       levelX = 1;
       gfx_Rectangle_NoClip(116, 225, 89, 11);
@@ -136,14 +135,14 @@ static void menu(void) {
     }
     timer_Set(1, 0);
     // erases the cursor-box
-    gfx_SetColor(6);
+    gfx_SetColor(COLOR_DARK_PURPLE);
     if (levelY == 3) {
       gfx_Rectangle_NoClip(116, 225, 89, 11);
     } else {
       gfx_Rectangle_NoClip(levelX * 60 - 40, levelY * 60 + 60, 40, 40);
     }
     // erases the best time/golden time
-    gfx_SetColor(22);
+    gfx_SetColor(COLOR_OLIVE);
     gfx_FillRectangle_NoClip(75, 29, 55, 10);
     gfx_FillRectangle_NoClip(277, 29, 40, 10);
     // decides which direction the cursor should go based on what buttons are being pressed
@@ -186,9 +185,9 @@ static void menu(void) {
       gfx_SetDrawScreen();
       // display this text in order to give the person time to get ready
       gfx_ZeroScreen();
-      PrintCenteredText("Are you ready?", 70, 255);
+      PrintCenteredText("Are you ready?", 70, COLOR_WHITE);
       msleep(600);
-      PrintCenteredText("Get set...", 92, 255);
+      PrintCenteredText("Get set...", 92, COLOR_WHITE);
       msleep(600);
       if (tinyJumperData[16] > 255) {
         gfx_FlipSpriteX(playerSprites[tinyJumperData[16] - 256], playerSprites[6]);
@@ -211,7 +210,7 @@ int main(void) {
   gfx_Begin();
   fontlib_SetFont(TJFont, 0);
   fontlib_SetTransparency(true);
-  gfx_SetTransparentColor(80);
+  gfx_SetTransparentColor(COLOR_TRANSP);
   gfx_SetPalette(global_palette, sizeof_global_palette, 0);
   if (tinyJumperData[82] == 1) {
     invertPalette();
