@@ -33,13 +33,14 @@ uint8_t prevDeathMsg = 11;
 bool dead = false;
 bool quit = false;
 bool goal = false;
+bool touched = false;
 uint8_t level = 0;
 uint8_t levelX = 1;
 uint8_t levelY = 0;
 unsigned int tinyJumperData[84];
 uint8_t golds = 0;
 
-const unsigned int goldTimes[16] = {288, 300, 405, 360, 327, 405, 750, 201, 360, 1000, 1000, 1000, 1000, 1000, 1000, 1000};
+const unsigned int goldTimes[16] = {288, 300, 405, 360, 327, 405, 750, 201, 360, 335, 1000, 1000, 1000, 1000, 1000, 1000};
 
 static void endSpeedrun(void) {
   gfx_SetDrawScreen();

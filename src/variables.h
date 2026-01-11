@@ -28,6 +28,8 @@ enum {
     COLOR_LIGHT_GREEN,
     COLOR_LIGHT_GRAY,
     COLOR_GOLD,
+    COLOR_BLUE,
+    COLOR_ORANGE,
     COLOR_WHITE = 255,
 };
 
@@ -52,6 +54,7 @@ extern uint8_t prevDeathMsg;
 extern bool dead;
 extern bool quit;
 extern bool goal;
+extern bool touched;
 extern uint8_t level;
 extern uint8_t levelX;
 extern uint8_t levelY;

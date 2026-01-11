@@ -10,6 +10,7 @@
 
 // this function gets called at the end of every frame
 void drawPlayerAndTime(int stringXpos, uint8_t stringYpos) {
+  static uint8_t touchColor = 255;
   if (playerX < 0) {
     playerX = 0;     // if the player hits the edge of the screen, then they stop
   }
@@ -26,7 +27,10 @@ void drawPlayerAndTime(int stringXpos, uint8_t stringYpos) {
   }
   gfx_SetColor(COLOR_DARK_PURPLE);
   gfx_FillRectangle(stringXpos, stringYpos, 40, 10);
-  if (tinyJumperData[16] < 256) {
+  if (touched) {
+    gfx_SetColor(touchColor);
+    gfx_FillCircle_NoClip(playerX + 4, playerY + 4, 3);
+  } else if (tinyJumperData[16] < 256) {
     gfx_SetColor(tinyJumperData[16]);
     gfx_FillRectangle_NoClip(playerX, playerY, 8, 8);
   } else if (tinyJumperData[16] > 255) {
@@ -40,7 +44,8 @@ void drawPlayerAndTime(int stringXpos, uint8_t stringYpos) {
   gfx_SetTextBGColor(COLOR_DARK_PURPLE);
   gfx_PrintStringXY(strTemp, stringXpos, stringYpos);
   if (gfx_CheckRectangleHotspot(playerX, playerY, 8, 8, stringXpos, stringYpos, 36, 10)) {
-    gfx_PrintStringXY(strTemp, stringXpos, stringYpos + 10);
+    touched = true;
+    touchColor = randInt(128, 255);
   }
 }
 
@@ -158,6 +163,50 @@ void quicksand(float x, float y, float width, float height) {
     playerXVelocity /= 3;
     playerGrounded = !(kb_Data[1] & kb_2nd);
     playerQuicksand = true;
+  }
+}
+
+static void teleport(struct portal_t *portal) {
+  static unsigned int time = 0;
+  if (timer - time < 4) {
+    return;
+  }
+  time = timer;
+  int8_t xofs = playerX - portal->x;
+  int8_t yofs = playerY - portal->y;
+  if (portal->direction != portal->exit->direction) {
+    playerX = portal->exit->x + yofs;
+    playerY = portal->exit->y + xofs;
+    float tempVelocity = playerYVelocity;
+    playerYVelocity = playerXVelocity;
+    playerXVelocity = tempVelocity;
+  } else {
+    playerX = portal->exit->x + xofs;
+    playerY = portal->exit->y + yofs;
+  }
+  if (portal->direction < portal->exit->direction) {
+    if ((portal->direction & 1) != (portal->exit->direction & 1)) {
+      playerXVelocity = -playerXVelocity;
+    }
+  } else {
+    if ((portal->direction & 1) != (portal->exit->direction & 1)) {
+      playerYVelocity = -playerYVelocity;
+    }
+  }
+}
+
+void portal(struct portal_t *portal) {
+  gfx_SetColor(portal->color);
+  if (portal->direction > PORTAL_DOWN) {
+    gfx_FillEllipse_NoClip(portal->x, portal->y, 4, 19);
+    if (portal->exit != NULL && gfx_CheckRectangleHotspot(portal->x - 3, portal->y - 18, 6, 36, playerX, playerY, 8, 8)) {
+      teleport(portal);
+    }
+  } else {
+    gfx_FillEllipse_NoClip(portal->x, portal->y, 19, 4);
+    if (portal->exit != NULL && gfx_CheckRectangleHotspot(portal->x - 18, portal->y - 3, 36, 6, playerX, playerY, 8, 8)) {
+      teleport(portal);
+    }
   }
 }
 

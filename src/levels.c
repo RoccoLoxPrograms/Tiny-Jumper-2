@@ -9,6 +9,7 @@
 static void levelSetup(float playerXStart, float playerYStart) {
   playerX = playerXStart;
   playerY = playerYStart;
+  touched = false;
   gfx_FillScreen(COLOR_DARK_PURPLE);
   gfx_SetColor(COLOR_GRAY);
   gfx_FillRectangle_NoClip(0, 235, 320, 5);
@@ -403,13 +404,79 @@ void level9(void) {
 }
 
 void level10(void) {
-  levelSetup(5, 227);
+  levelSetup(312, 227);
+  gfx_FillRectangle_NoClip(0, 235, 320, 5);
+  gfx_FillRectangle_NoClip(0, 0, 6, 235);
+  gfx_FillRectangle_NoClip(6, 0, 74, 6);
+  gfx_FillRectangle_NoClip(80, 0, 6, 188);
+  gfx_FillRectangle_NoClip(86, 182, 234, 6);
+  gfx_FillRectangle_NoClip(86, 53, 191, 6);
+  gfx_FillRectangle_NoClip(249, 59, 6, 80);
+  gfx_FillRectangle_NoClip(314, 0, 6, 53);
+  gfx_FillRectangle_NoClip(6, 211, 17, 6);
+  gfx_FillRectangle_NoClip(48, 176, 32, 6);
+  gfx_FillRectangle_NoClip(255, 133, 22, 6);
+  gfx_FillRectangle_NoClip(292, 113, 22, 6);
+  gfx_FillRectangle_NoClip(255, 93, 22, 6);
+  gfx_FillRectangle_NoClip(292, 73, 22, 6);
+  gfx_SetColor(COLOR_RED);
+  gfx_FillRectangle_NoClip(314, 53, 6, 129);
+  gfx_SetColor(COLOR_WHITE);
+  gfx_FillTriangle_NoClip(137, 235, 142, 225, 147, 235);
+  gfx_FillTriangle_NoClip(86, 235, 91, 225, 96, 235);
+  gfx_FillTriangle_NoClip(65, 175, 69, 167, 73, 175);
+  gfx_FillTriangle_NoClip(134, 53, 139, 43, 144, 53);
+  for (uint8_t x = 126; x < 214; x += 11) {
+    gfx_FillTriangle_NoClip(x, 182, x + 5, 172, x + 10, 182);
+  }
+  struct portal_t portal1 = {
+    .x = 42,
+    .y = 16,
+    .color = COLOR_BLUE,
+    .direction = PORTAL_UP,
+  };
+    struct portal_t portal2 = {
+    .x = 150,
+    .y = 87,
+    .color = COLOR_ORANGE,
+    .direction = PORTAL_RIGHT,
+    // .exit = NULL,
+  };
+  portal1.exit = &portal2;
+  portal2.exit = &portal1;
   gfx_BlitScreen();
   gfx_SetDrawBuffer();
   while (!dead && !quit && !goal) {
     player();
     rectPlatform(0, 235, 320, 5);
-    drawPlayerAndTime(1, 1);
+    rectPlatform(0, 0, 6, 235);
+    rectPlatform(6, 0, 74, 6);
+    rectPlatform(80, 0, 6, 188);
+    rectPlatform(86, 182, 234, 6);
+    rectPlatform(86, 53, 191, 6);
+    rectPlatform(249, 59, 6, 80);
+    rectPlatform(314, 0, 6, 53);
+    rectPlatform(6, 211, 17, 6);
+    rectPlatform(48, 176, 32, 6);
+    rectPlatform(255, 133, 22, 6);
+    rectPlatform(292, 113, 22, 6);
+    rectPlatform(255, 93, 22, 6);
+    rectPlatform(292, 73, 22, 6);
+    antiGravity(6, 6, 74, 126);
+    spike(314, 53, 6, 129);
+    spike(137, 225, 11, 11);
+    spike(86, 225, 11, 11);
+    spike(65, 167, 9, 9);
+    spike(126, 172, 88, 11);
+    spike(134, 43, 11, 11);
+    bouncePad(12, 209, 9, 8);
+    bouncePad(50, 174, 9, 7);
+    bouncePad(296, 180, 14, 8.5);
+    portal(&portal1);
+    portal(&portal2);
+    endGoal(111, 37);
+    playerAntiGravity = anyAntiGravity;
+    drawPlayerAndTime(87, 23);
     endOfFrame();
   }
 }
