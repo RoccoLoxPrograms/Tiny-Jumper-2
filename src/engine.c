@@ -126,7 +126,7 @@ void endGoal(float x, float y) {
       goalColor = COLOR_GOAL_1;
     }
     gfx_SetColor(goalColor);
-    gfx_FillRectangle_NoClip(x + 2 * rectOffset, y + 2 * rectOffset, 16 - 4 * rectOffset, 16 - 4 * rectOffset);
+    gfx_FillRectangle(x + 2 * rectOffset, y + 2 * rectOffset, 16 - 4 * rectOffset, 16 - 4 * rectOffset);
     goalColor++;
   }
 }
@@ -146,7 +146,7 @@ void bouncePad(float x, float y, float width, float bounceSpeed) {
 void antiGravity(float x, float y, float width, float height) {
   // draws the anti-gravity
   gfx_SetColor(COLOR_LIGHT_PURPLE);
-  gfx_FillRectangle_NoClip(x, y, width, height);
+  gfx_FillRectangle(x, y, width, height);
   // collision and stuff for the anti-gravity
   if (gfx_CheckRectangleHotspot(x, y, width, height, playerX, playerY, 8, 8)) {
     if (!playerAntiGravity) {
@@ -158,7 +158,7 @@ void antiGravity(float x, float y, float width, float height) {
 
 void quicksand(float x, float y, float width, float height) {
   gfx_SetColor(COLOR_TAN);
-  gfx_FillRectangle_NoClip(x, y, width, height);
+  gfx_FillRectangle(x, y, width, height);
   if (gfx_CheckRectangleHotspot(x, y, width, height, playerX, playerY, 8, 8)) {
     playerXVelocity /= 3;
     playerGrounded = !(kb_Data[1] & kb_2nd);
@@ -168,7 +168,7 @@ void quicksand(float x, float y, float width, float height) {
 
 static void teleport(struct portal_t *portal) {
   static unsigned int time = 0;
-  if (timer - time < 4) {
+  if (timer - time < 8) {
     return;
   }
   time = timer;

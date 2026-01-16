@@ -29,7 +29,6 @@ enum {
     COLOR_LIGHT_GRAY,
     COLOR_GOLD,
     COLOR_BLUE,
-    COLOR_ORANGE,
     COLOR_WHITE = 255,
 };
 
