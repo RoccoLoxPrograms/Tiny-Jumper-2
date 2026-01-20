@@ -460,6 +460,7 @@ void options(void) {
           break;
         case 148:
           speedrunnerMode = !speedrunnerMode;
+          timer = 0;
           quit = true;
           break;
         case 178:

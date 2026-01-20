@@ -40,7 +40,7 @@ uint8_t levelY = 0;
 unsigned int tinyJumperData[84];
 uint8_t golds = 0;
 
-const unsigned int goldTimes[16] = {288, 300, 405, 360, 327, 405, 750, 201, 360, 340, 345, 123, 268, 1000, 1000, 1000};
+const unsigned int goldTimes[16] = {288, 300, 201, 405, 345, 360, 405, 340, 360, 327, 268, 123, 162, 196, 750, 1000};
 
 static void endSpeedrun(void) {
   gfx_SetDrawScreen();
@@ -95,7 +95,7 @@ static void menu(void) {
   gfx_SetTextBGColor(COLOR_DARK_PURPLE);
   gfx_SetTextTransparentColor(5);
   gfx_PrintStringXY("Press [mode] for options", 77, 47);
-  golds = 15;
+  ///////////////////////golds = 15;
   if (golds > 14) {
     gfx_PrintStringXY("BONUS LEVEL!", 118, 227);
   }

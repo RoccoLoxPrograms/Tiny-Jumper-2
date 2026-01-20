@@ -7,6 +7,7 @@
 #include <fontlibc.h>
 #include <math.h>
 #include <stdbool.h>
+#include <string.h>
 
 // this function gets called at the end of every frame
 void drawPlayerAndTime(int stringXpos, uint8_t stringYpos) {
@@ -25,7 +26,7 @@ void drawPlayerAndTime(int stringXpos, uint8_t stringYpos) {
     playerYVelocity = 0;
     playerGrounded = 3;
   }
-  gfx_SetColor(COLOR_DARK_PURPLE);
+  gfx_SetColor(gfx_GetPixel(stringXpos + 6, stringYpos + 8));
   gfx_FillRectangle(stringXpos, stringYpos, 40, 10);
   if (touched) {
     gfx_SetColor(touchColor);
@@ -41,7 +42,7 @@ void drawPlayerAndTime(int stringXpos, uint8_t stringYpos) {
     }
   }
   gfx_SetTextFGColor(COLOR_WHITE);
-  gfx_SetTextBGColor(COLOR_DARK_PURPLE);
+  gfx_SetTextBGColor(gfx_GetPixel(stringXpos + 6, stringYpos + 8));
   gfx_PrintStringXY(strTemp, stringXpos, stringYpos);
   if (gfx_CheckRectangleHotspot(playerX, playerY, 8, 8, stringXpos, stringYpos, 36, 10)) {
     touched = true;
@@ -62,18 +63,16 @@ void drawButton(uint24_t x, uint8_t y) {
 }
 
 void resetData(void) {
-  tinyJumperData[0] = 0;
+  tinyJumperData[0] = 0; // Open level 1 + bonus
   tinyJumperData[15] = 0;
-  for (uint8_t levelNumber = 1; levelNumber < 15; levelNumber++) {
-    tinyJumperData[levelNumber] = 0xFFFFFF;
-  }
-  for (uint8_t appvarOffset = 17; appvarOffset < 81; appvarOffset++) {
+  memset(&(tinyJumperData[1]), 0xFF, sizeof(unsigned int) * 14); // Clear times for 2 - 15
+  for (uint8_t appvarOffset = 17; appvarOffset < 81; appvarOffset++) { // Sprite data
     tinyJumperData[appvarOffset] = 255;
   }
-  tinyJumperData[16] = 21;
-  tinyJumperData[81] = 0;
-  tinyJumperData[82] = 0;
-  tinyJumperData[83] = 0;
+  tinyJumperData[16] = 21; // Player color
+  tinyJumperData[81] = 0; // Death messages
+  tinyJumperData[82] = 0; // Invert palette
+  tinyJumperData[83] = 0; // Speedrun timer
 }
 
 // converts a float to a string
