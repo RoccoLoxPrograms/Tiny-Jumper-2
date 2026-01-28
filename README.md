@@ -1,25 +1,28 @@
 # Tiny Jumper 2
 
-Sequel to the classic [Tiny Jumper](https://github.com/RoccoLoxPrograms/Tiny-Jumper)
+Sequel to the classic [Tiny Jumper](https://github.com/RoccoLoxPrograms/Tiny-Jumper)!
 
+Tiny Jumper 2 is a speed-running platformer, where you must navigate through obstacles to complete levels as quickly as possible. This sequel has new levels, new obstacles, and new secrets...
 
+## Screenshots
+![Level 1](screenshots/level1.gif) ![Settings](screenshots/settings.png)
 
 ## Controls (*for the menu*)
 
-| Key(s)           | Action                 |
-|------------------|------------------------|
-| `↑` `↓` `←` `→`  | Move the cursor        |
-| `clear`          | Quit the game          |
-| `2nd` or `enter` | Select a level         |
-| `mode`           | Go to the options menu |
+| Key(s)                                               | Action                 |
+|------------------------------------------------------|------------------------|
+| <kbd>↑</kbd> <kbd>↓</kbd> <kbd>←</kbd> <kbd>→</kbd>  | Move the cursor        |
+| <kbd>clear</kbd>                                     | Quit the game          |
+| <kbd>2nd</kbd> or <kbd>enter</kbd>                   | Select a level         |
+| <kbd>mode</kbd>                                      | Go to the options menu |
 
 ## Controls (*when in a level*)
 
-| Key(s)  | Action                     |
-|---------|----------------------------|
-| `←` `→` | Move the player left/right |
-| `2nd`   | Jump                       |
-| `clear` | Quit to the menu           |
+| Key(s)                    | Action                     |
+|---------------------------|----------------------------|
+| <kbd>←</kbd> <kbd>→</kbd> | Move the player left/right |
+| <kbd>2nd</kbd>            | Jump                       |
+| <kbd>clear</kbd>          | Quit to the menu           |
 
 ## Credits
 

@@ -7,10 +7,10 @@
 #include <sys/timers.h>
 
 static void drawSquare(uint24_t cursorX, uint8_t cursorY, uint8_t color) {
-  if (color == 79) {
+  if (color == COLOR_TRANSP) {
     gfx_SetColor(COLOR_WHITE);
     gfx_FillRectangle_NoClip(cursorX, cursorY, 8, 8);
-    gfx_SetColor(35);
+    gfx_SetColor(COLOR_LIGHT_GRAY);
     uint24_t transparentDrawerX = cursorX;
     for (uint8_t transparentDrawerY = cursorY; transparentDrawerY < cursorY + 8; transparentDrawerY += 2){
       do {
@@ -129,7 +129,7 @@ void spriteMaker(void) {
       }
     } else {
       if (kb_Data[7] && (!keyPressed || timer_Get(1) > 3000)) {
-        drawSquare(cursorX, cursorY, gfx_GetPixel(cursorX + 1, cursorY + 1) + 45 * (gfx_GetPixel(cursorX + 1, cursorY + 1) == 34));
+        drawSquare(cursorX, cursorY, gfx_GetPixel(cursorX + 1, cursorY + 1) + (COLOR_TRANSP - COLOR_LIGHT_GRAY) * (gfx_GetPixel(cursorX + 1, cursorY + 1) == COLOR_LIGHT_GRAY));
         switch (kb_Data[7]) {
           case kb_Right:
             cursorX += 8 * (cursorX < 296);
@@ -163,9 +163,9 @@ void spriteMaker(void) {
       if (kb_IsDown(kb_Key2nd)) {
         drawSquare(cursorX, cursorY, playerColor);
       } else if (kb_IsDown(kb_KeyAlpha)) {
-        drawSquare(cursorX, cursorY, 79);
+        drawSquare(cursorX, cursorY, COLOR_TRANSP);
       } else if (kb_IsDown(kb_KeyMode)) {
-        drawSquare(cursorX, cursorY, gfx_GetPixel(cursorX + 1, cursorY + 1) + 45 * (gfx_GetPixel(cursorX + 1, cursorY + 1) == 34));
+        drawSquare(cursorX, cursorY, gfx_GetPixel(cursorX + 1, cursorY + 1) + (COLOR_TRANSP - COLOR_LIGHT_GRAY) * (gfx_GetPixel(cursorX + 1, cursorY + 1) == COLOR_LIGHT_GRAY));
         pickColor = true;
         cursorX = 16;
         cursorY = 90;
@@ -183,8 +183,8 @@ void spriteMaker(void) {
   if (kb_IsDown(kb_KeyEnter)) {
     for (int8_t i = 0; i < 8; i++) {
       for (int8_t j = 0; j < 8; j++) {
-        if (gfx_GetPixel(8 * i + 241, 8 * j + 109) == 34) {
-          tinyJumperData[17 + i + 8 * j] = 79;
+        if (gfx_GetPixel(8 * i + 241, 8 * j + 109) == COLOR_LIGHT_GRAY) {
+          tinyJumperData[17 + i + 8 * j] = COLOR_TRANSP;
         } else {
           tinyJumperData[17 + i + 8 * j] = gfx_GetPixel(8 * i + 241, 8 * j + 109);
         }

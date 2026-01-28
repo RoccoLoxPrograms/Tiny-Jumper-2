@@ -27,6 +27,7 @@ gfx_sprite_t *playerSprites[7];
 
 // the game runs at 30.00732601 frames a second, or .0333251953 seconds per frame
 unsigned int timer;
+unsigned int portalTimer;
 
 char strTemp[10];
 uint8_t prevDeathMsg = 11;
@@ -40,7 +41,7 @@ uint8_t levelY = 0;
 unsigned int tinyJumperData[84];
 uint8_t golds = 0;
 
-const unsigned int goldTimes[16] = {288, 300, 201, 405, 345, 360, 405, 340, 360, 327, 268, 123, 162, 196, 750, 1000};
+const unsigned int goldTimes[16] = {288, 279, 201, 405, 330, 360, 405, 335, 360, 327, 268, 123, 181, 190, 750, 931};
 
 static void endSpeedrun(void) {
   gfx_SetDrawScreen();
@@ -196,6 +197,7 @@ static void menu(void) {
       gfx_SetTextScale(1, 1);
       gfx_SetTextBGColor(247);
       timer = 0;
+      portalTimer = 0;
     }
   }
 }

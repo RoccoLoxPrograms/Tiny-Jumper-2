@@ -333,7 +333,7 @@ void level8(void) {
     .direction = PORTAL_UP,
   };
     struct portal_t portal2 = {
-    .x = 150,
+    .x = 110,
     .y = 87,
     .color = COLOR_BLUE,
     .direction = PORTAL_RIGHT,
@@ -502,8 +502,8 @@ void level11(void) {
     .direction = PORTAL_DOWN,
   };
   struct portal_t portal2 = {
-    .x = 90,
-    .y = 180,
+    .x = 86,
+    .y = 184,
     .color = COLOR_BLUE,
     .direction = PORTAL_RIGHT,
   };
@@ -585,14 +585,17 @@ void level12(void) {
   playerX = 156;
   playerY = 42;
   touched = false;
-  float scroll = 0;
+  unsigned int scroll = 0;
   unsigned int time = 0;
+  bool redraw = true;
   gfx_FillScreen(COLOR_DARK_PURPLE);
   gfx_BlitScreen();
   gfx_SetDrawBuffer();
   while (!dead && !quit && !goal) {
     player();
-    gfx_FillScreen(COLOR_DARK_PURPLE);
+    if (redraw) {
+      gfx_FillScreen(COLOR_DARK_PURPLE);
+    }
     gfx_SetColor(COLOR_GRAY);
     gfx_FillRectangle_NoClip(0, 0, 6, 240);
     gfx_FillRectangle_NoClip(314, 0, 6, 240);
@@ -605,11 +608,15 @@ void level12(void) {
       }
     }
     if (scroll > 394) {
-      gfx_FillRectangle(0, 635 - scroll, 320, 5);
+      if (redraw) {
+        gfx_FillRectangle(0, 635 - scroll, 320, 5);
+      }
       rectPlatform(0, 635 - scroll, 320, 5);
     }
     if (scroll > 166) {
-      gfx_FillRectangle(123, 406 - scroll, 92, 6);
+      if (redraw) {
+        gfx_FillRectangle(123, 406 - scroll, 92, 6);
+      }
       rectPlatform(123, 406 - scroll, 92, 6);
     }
     if (scroll < 197) {
@@ -624,35 +631,42 @@ void level12(void) {
       spike(77, 232 - scroll, 78, 104);
     }
     if (scroll > 157) {
-      gfx_FillRectangle(11, 420 - scroll, 52, 52);
+      if (redraw) {
+        gfx_FillRectangle(11, 420 - scroll, 52, 52);
+      }
       spike(11, 420 - scroll, 52, 52);
     }
     if (scroll > 254) {
-      gfx_FillRectangle(138, 494 - scroll, 92, 14);
+      if (redraw) {
+        gfx_FillRectangle(138, 494 - scroll, 92, 14);
+      }
       spike(138, 494 - scroll, 92, 14);
     }
     if (scroll > 379) {
       endGoal(198, 619 - scroll);
     }
-    gfx_SetColor(COLOR_WHITE);
     if (scroll > 158) {
-      for (unsigned int x = 124; x < 206; x += 9) {
-        gfx_FillTriangle(x, 406 - scroll, x + 4, 398 - scroll, x + 8, 406 - scroll);
+      if (redraw) {
+        gfx_SetColor(COLOR_RED);
+        gfx_FillRectangle(123, 398 - scroll, 92, 8);
       }
-      spike(124, 398 - scroll, 90 , 9);
+      spike(123, 398 - scroll, 92 , 8);
     }
     if (scroll > 385) {
-      gfx_FillTriangle(48, 635 - scroll, 53, 625 - scroll, 58, 635 - scroll);
+      if (redraw) {
+        gfx_SetColor(COLOR_WHITE);
+        gfx_FillTriangle(48, 635 - scroll, 53, 625 - scroll, 58, 635 - scroll);
+        gfx_FillTriangle(96, 635 - scroll, 101, 625 - scroll, 106, 635 - scroll);
+        gfx_FillTriangle(144, 635 - scroll, 149, 625 - scroll, 154, 635 - scroll);
+        gfx_FillTriangle(220, 635 - scroll, 225, 625 - scroll, 230, 635 - scroll);
+        gfx_FillTriangle(282, 635 - scroll, 287, 625 - scroll, 292, 635 - scroll);
+        gfx_FillTriangle(299, 635 - scroll, 304, 625 - scroll, 309, 635 - scroll);
+      }
       spike(48, 625 - scroll, 11, 11);
-      gfx_FillTriangle(96, 635 - scroll, 101, 625 - scroll, 106, 635 - scroll);
       spike(96, 625 - scroll, 11, 11);
-      gfx_FillTriangle(144, 635 - scroll, 149, 625 - scroll, 154, 635 - scroll);
       spike(144, 625 - scroll, 11, 11);
-      gfx_FillTriangle(220, 635 - scroll, 225, 625 - scroll, 230, 635 - scroll);
       spike(220, 625 - scroll, 11, 11);
-      gfx_FillTriangle(282, 635 - scroll, 287, 625 - scroll, 292, 635 - scroll);
       spike(282, 625 - scroll, 11, 11);
-      gfx_FillTriangle(299, 635 - scroll, 304, 625 - scroll, 309, 635 - scroll);
       spike(299, 625 - scroll, 11, 11);
     }
     if (scroll < 12) {
@@ -707,6 +721,7 @@ void level12(void) {
     if (scroll > 255) {
       quicksand(43, 495 - scroll, 40, 40);
     }
+    redraw = !(scroll == 400);
     if ((playerY >= 116 || scroll > 0) && scroll < 400) {
       if ((scroll + playerY - 116) - 400 > 0) {
         scroll = 400;
@@ -817,6 +832,12 @@ void level14(void) {
   gfx_FillRectangle_NoClip(88, 5, 6, 95);
   gfx_SetColor(COLOR_RED);
   gfx_FillRectangle_NoClip(94, 224, 226, 16);
+  gfx_SetColor(COLOR_LIGHT_PURPLE);
+  gfx_FillRectangle_NoClip(94, 5, 226, 10);
+  gfx_SetColor(COLOR_WHITE);
+  for (unsigned int x = 97; x < 308; x += 15) {
+    gfx_FillTriangle_NoClip(x, 4, x + 5, 14, x + 10, 4);
+  }
   drawButton(40, 231);
   gfx_BlitScreen();
   gfx_SetDrawBuffer();
@@ -831,17 +852,14 @@ void level14(void) {
     rectPlatform(88, 140, 6, 95);
     rectPlatform(88, 5, 6, 95);
     spike(94, 224, 226, 16);
-    antiGravity(94, 5, 226, 44);
+    antiGravity(94, 15, 226, 34);
     playerAntiGravity = anyAntiGravity;
     gfx_SetColor(COLOR_WHITE);
     gfx_FillTriangle_NoClip(44, 113, 34, 118, 44, 123);
     spike(34, 113, 11, 11);
     gfx_FillTriangle_NoClip(44, 178, 34, 183, 44, 188);
     spike(34, 178, 11, 11);
-    for (unsigned int x = 97; x < 308; x += 15) {
-      gfx_FillTriangle_NoClip(x, 4, x + 5, 14, x + 10, 4);
-      spike(x, 4, 11, 11);
-    }
+    spike(94, 5, 226, 10);
     bouncePad(74, 233, 10, 10.5);
     if (!button) {
       if (gfx_CheckRectangleHotspot(40, 231, 15, 4, playerX, playerY, 8, 8)) {
@@ -854,10 +872,10 @@ void level14(void) {
       gfx_FillRectangle_NoClip(114, 49, 167, 175);
       lavaWidth++;
       for (uint8_t i = 0; i < 4; i++) {
-        if (playerX >= 114 + i * 46 && playerX <= 114 + i * 46 + 26 && playerGrounded == 2) {
-          playerY += platformYSpeed[i];
-        }
         platformY[i] += platformYSpeed[i];
+        if (playerX + 8 >= 114 + i * 46 && playerX <= 114 + i * 46 + 26 && playerGrounded == 2) {
+          playerY = platformY[i] - 8;
+        }
         if (platformY[i] < 50 || platformY[i] > 217) {
           platformYSpeed[i] = -platformYSpeed[i];
         }
@@ -900,11 +918,12 @@ void level15(void) {
     spike(157, 59, 3, 50);
     spike(0, 234, 187, 6);
     rectPlatform(0, 235, 320, 5);
-    rectPlatform(0, 40, 45, 5);
+    rectPlatform(0, 40, 45, 6);
     rectPlatform(270, 45, 90, 5);
-    for (uint8_t platformDrawer = 0; platformDrawer < 180; platformDrawer += 48) {
-      rectPlatform(platformDrawer + 80, platformDrawer / 2 + 40, 9, 80);
-    }
+    rectPlatform(80, button == 2 ? 8 : 40, 9, button == 2 ? 112 : 80);
+    rectPlatform(128, 64, 9, 80);
+    rectPlatform(176, 88, 9, 80);
+    rectPlatform(224, 112, 9, 80);
     switch (button) {
       case 0: // when the first button has yet to be pressed
         if (gfx_CheckRectangleHotspot(playerX, playerY, 8, 8, 295, 231, 15, 5)) {
@@ -937,7 +956,6 @@ void level15(void) {
           antiGravity(0, antiGravityDrawer / 2 + 96, antiGravityDrawer + 80, 25);
         }
         antiGravity(270, 50, 50, 167);
-        rectPlatform(80, 8, 9, 90);
         drawPlayerAndTime(2, 48);
       break;
     }
@@ -948,13 +966,186 @@ void level15(void) {
 }
 
 void bonusLevel2(void) {
-  levelSetup(5, 227);
+  float lavaHeight = 4;
+  float lavaYSpeed = .35;
+  bool part2 = false;
+  levelSetup(8, 227);
+  gfx_FillRectangle_NoClip(0, 0, 320, 5);
+  gfx_FillRectangle_NoClip(0, 5, 6, 230);
+  gfx_FillRectangle_NoClip(54, 5, 6, 230);
+  gfx_FillRectangle_NoClip(314, 5, 6, 230);
+  gfx_FillRectangle_NoClip(108, 5, 6, 68);
+  gfx_FillRectangle_NoClip(108, 118, 6, 117);
+  gfx_FillRectangle_NoClip(114, 67, 144, 6);
+  gfx_FillRectangle_NoClip(258, 67, 6, 146);
+  gfx_FillRectangle_NoClip(149, 207, 109, 6);
+  gfx_FillRectangle_NoClip(114, 118, 109, 6);
+  gfx_SetColor(COLOR_WHITE);
+  for (unsigned int x = 118; x < 254; x += 15) {
+    gfx_FillTriangle_NoClip(x, 67, x + 5, 57, x + 10, 67);
+  }
+  for (unsigned int y = 67; y < 203; y += 15) {
+    gfx_FillTriangle_NoClip(263, y, 273, y + 5, 263, y + 10);
+  }
+  gfx_FillTriangle_NoClip(108, 118, 113, 108, 118, 118);
+  gfx_FillTriangle_NoClip(149, 118, 154, 108, 159, 118);
+  gfx_FillTriangle_NoClip(166, 207, 171, 197, 176, 207);
+  struct portal_t portal1 = {
+    .x = 30,
+    .y = 11,
+    .color = COLOR_BLUE,
+    .direction = PORTAL_UP,
+  };
+  struct portal_t portal2 = {
+    .x = 122,
+    .y = 28,
+    .color = COLOR_BLUE,
+    .direction = PORTAL_RIGHT,
+  };
+  portal1.exit = &portal2;
+  portal2.exit = &portal1;
   gfx_BlitScreen();
   gfx_SetDrawBuffer();
+  while (!dead && !quit && !part2) {
+    player();
+    rectPlatform(0, 235, 320, 5);
+    rectPlatform(0, 0, 320, 5);
+    rectPlatform(0, 5, 6, 230);
+    rectPlatform(54, 5, 6, 230);
+    rectPlatform(314, 5, 6, 230);
+    rectPlatform(108, 5, 6, 69);
+    rectPlatform(108, 118, 6, 117);
+    rectPlatform(114, 67, 144, 6);
+    rectPlatform(258, 67, 6, 146);
+    rectPlatform(149, 207, 109, 6);
+    rectPlatform(114, 118, 109, 6);
+    bouncePad(22, 233, 16, 22.5);
+    bouncePad(76, 233, 16, 22.5);
+    bouncePad(236, 205, 10, 10);
+    spike(118, 57, 145, 11);
+    spike(263, 67, 11, 146);
+    spike(108, 108, 11, 11);
+    spike(149, 108, 11, 11);
+    spike(166, 197, 11, 11);
+    gfx_SetColor(COLOR_DARK_PURPLE);
+    gfx_FillRectangle_NoClip(149, 213, 115, 22);
+    gfx_SetColor(COLOR_RED);
+    gfx_FillRectangle_NoClip(149, 213, 115, lavaHeight);
+    spike(149, 213, 115, lavaHeight);
+    lavaHeight += lavaYSpeed;
+    if (lavaHeight >= 22 || lavaHeight <= 4) {
+      lavaYSpeed = -lavaYSpeed;
+    }
+    portal(&portal1);
+    portal(&portal2);
+    gfx_SetColor(COLOR_GOAL_1);
+    gfx_FillEllipse_NoClip(84, 11, 19, 4);
+    if (gfx_CheckRectangleHotspot(66, 8, 36, 6, playerX, playerY, 8, 8)) {
+      part2 = true;
+      playerYVelocity = -24;
+    }
+    drawPlayerAndTime(187, 126);
+    playerQuicksand = false;
+    quicksand(207, 73, 16, 45);
+    quicksand(223, 73, 35, 51);
+    endOfFrame();
+  }
+  if (dead || quit) {
+    return;
+  }
+  float lavaWidth = 6;
+  float lavaXSpeed = .35;
+  unsigned int spikeX[4] = {109, 208, 109, 208};
+  int8_t spikeXSpeed[4] = {1,  -1, 1, -2};
+  levelSetup(286, 222);
+  gfx_FillRectangle_NoClip(0, 203, 6, 32);
+  gfx_FillRectangle_NoClip(0, 5, 6, 43);
+  gfx_FillRectangle_NoClip(266, 0, 54, 5);
+  gfx_FillRectangle_NoClip(314, 5, 6, 230);
+  gfx_FillRectangle_NoClip(260, 42, 6, 193);
+  gfx_FillRectangle_NoClip(56, 42, 204, 6);
+  gfx_FillRectangle_NoClip(84, 83, 176, 6);
+  gfx_FillRectangle_NoClip(20, 64, 22, 6);
+  gfx_FillRectangle_NoClip(20, 121, 22, 6);
+  gfx_FillRectangle_NoClip(20, 181, 22, 6);
+  gfx_SetColor(COLOR_RED);
+  gfx_FillRectangle_NoClip(0, 0, 266, 5);
+  gfx_SetColor(COLOR_WHITE);
+  for (unsigned int x = 87; x < 231; x += 11) {
+    gfx_FillTriangle_NoClip(x, 83, x + 5, 73, x + 10, 83);
+  }
+  gfx_FillTriangle_NoClip(98, 235, 103, 225, 108, 235);
+  gfx_FillTriangle_NoClip(158, 235, 163, 225, 168, 235);
+  gfx_FillTriangle_NoClip(219, 235, 224, 225, 229, 235);
   while (!dead && !quit && !goal) {
     player();
     rectPlatform(0, 235, 320, 5);
-    drawPlayerAndTime(1, 1);
+    rectPlatform(0, 203, 6, 32);
+    rectPlatform(0, 5, 6, 43);
+    rectPlatform(266, 0, 54, 5);
+    rectPlatform(314, 5, 6, 230);
+    rectPlatform(260, 42, 6, 193);
+    rectPlatform(56, 42, 204, 6);
+    rectPlatform(84, 83, 176, 6);
+    rectPlatform(62, 121, 176, 6);
+    rectPlatform(84, 159, 176, 6);
+    rectPlatform(62, 197, 176, 6);
+    rectPlatform(20, 64, 22, 6);
+    rectPlatform(20, 121, 22, 6);
+    rectPlatform(20, 181, 22, 6);
+    rectPlatform(20, 16, 22, 6);
+    rectPlatform(59, 16, 44, 6);
+    rectPlatform(132, 16, 44, 6);
+    rectPlatform(205, 16, 44, 6);
+    bouncePad(244, 233, 10, 7);
+    bouncePad(68, 195, 10, 7);
+    bouncePad(244, 157, 10, 7);
+    bouncePad(68, 119, 10, 10);
+    spike(0, 0, 266, 5);
+    spike(87, 73, 154, 11);
+    antiGravity(6, 5, 308, 37);
+    playerAntiGravity = anyAntiGravity;
+    gfx_SetColor(COLOR_GRAY);
+    gfx_FillRectangle_NoClip(20, 16, 22, 6);
+    gfx_FillRectangle_NoClip(59, 16, 44, 6);
+    gfx_FillRectangle_NoClip(132, 16, 44, 6);
+    gfx_FillRectangle_NoClip(205, 16, 44, 6);
+    gfx_SetColor(COLOR_GOAL_1);
+    gfx_FillEllipse_NoClip(290, 228, 19, 4);
+    gfx_SetColor(COLOR_DARK_PURPLE);
+    gfx_FillRectangle_NoClip(0, 48, 20, 155);
+    gfx_FillRectangle_NoClip(42, 48, 20, 155);
+    gfx_FillRectangle_NoClip(108, 111, 111, 86);
+    gfx_SetColor(COLOR_GRAY);
+    gfx_FillRectangle_NoClip(62, 121, 176, 6);
+    gfx_FillRectangle_NoClip(84, 159, 176, 6);
+    gfx_FillRectangle_NoClip(62, 197, 176, 6);
+    gfx_SetColor(COLOR_RED);
+    gfx_FillRectangle_NoClip(0, 48, lavaWidth, 155);
+    gfx_FillRectangle_NoClip(62 - (unsigned int)lavaWidth, 48, lavaWidth, 155);
+    gfx_SetColor(COLOR_WHITE);
+    for (uint8_t i = 0; i < 4; i++) {
+      uint8_t y = i < 2 ? 197 : 121;
+      gfx_FillTriangle_NoClip(spikeX[i], y, spikeX[i] + 5, y - 10, spikeX[i] + 10, y);
+      spike(spikeX[i], y - 10, 11, 11);
+      spikeX[i] += spikeXSpeed[i];
+      if (spikeX[i] < 110 || spikeX[i] > 207) {
+        spikeXSpeed[i] = -spikeXSpeed[i];
+      }
+    }
+    spike(0, 48, lavaWidth, 155);
+    spike(62 - (unsigned int)lavaWidth, 48, lavaWidth, 155);
+    spike(98, 225, 11, 11);
+    spike(158, 225, 11, 11);
+    spike(219, 225, 11, 11);
+    lavaWidth += lavaXSpeed;
+    if (lavaWidth >= 20 || lavaWidth <= 2) {
+      lavaXSpeed = -lavaXSpeed;
+    }
+    endGoal(244, 67);
+    drawPlayerAndTime(63, 128);
+    playerQuicksand = false;
+    quicksand(62, 48, 198, 6);
     endOfFrame();
   }
 }

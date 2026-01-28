@@ -29,7 +29,7 @@ static void settingsSwitch(unsigned int x, uint8_t y, bool turnedOn) {
     gfx_SetColor(COLOR_WHITE);
     gfx_FillRectangle_NoClip(x + 1, y + 1, 7, 7);
   } else {
-    gfx_SetColor(37);
+    gfx_SetColor(COLOR_LIGHT_BLUE);
     gfx_FillRectangle_NoClip(x, y, 16, 9);
     gfx_SetColor(COLOR_WHITE);
     gfx_FillRectangle_NoClip(x + 8, y + 1, 7, 7);
@@ -109,7 +109,7 @@ static void customizePlayer(void) {
     cursorY = 197;
     width = 98;
     height = 12;
-  } else if (playerColor != 21) {
+  } else if (playerColor != COLOR_OLIVE) {
     cursorX = 16 + 8 * (playerColor % 16);
     cursorY = 49 + 7 * floor(playerColor / 16);
   }
@@ -413,7 +413,9 @@ void options(void) {
   } else {
     lockedBox(16, 84, 128, 77);
     gfx_SetTextFGColor(COLOR_BLACK);
+    gfx_SetTextBGColor(222);
     gfx_PrintStringXY("5 golds", 56, 89);
+    gfx_SetTextBGColor(COLOR_DARK_PURPLE);
   }
   if (golds > 9) {
     for (uint8_t displaySprites = 1; displaySprites < 6; displaySprites++) {
@@ -461,6 +463,7 @@ void options(void) {
         case 148:
           speedrunnerMode = !speedrunnerMode;
           timer = 0;
+          portalTimer = 0;
           quit = true;
           break;
         case 178:

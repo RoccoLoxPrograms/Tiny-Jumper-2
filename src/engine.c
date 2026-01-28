@@ -69,7 +69,7 @@ void resetData(void) {
   for (uint8_t appvarOffset = 17; appvarOffset < 81; appvarOffset++) { // Sprite data
     tinyJumperData[appvarOffset] = 255;
   }
-  tinyJumperData[16] = 21; // Player color
+  tinyJumperData[16] = COLOR_OLIVE; // Player color
   tinyJumperData[81] = 0; // Death messages
   tinyJumperData[82] = 0; // Invert palette
   tinyJumperData[83] = 0; // Speedrun timer
@@ -166,11 +166,10 @@ void quicksand(float x, float y, float width, float height) {
 }
 
 static void teleport(struct portal_t *portal) {
-  static unsigned int time = 0;
-  if (timer - time < 8) {
+  if (timer - portalTimer < 16) {
     return;
   }
-  time = timer;
+  portalTimer = timer;
   int8_t xofs = playerX - portal->x;
   int8_t yofs = playerY - portal->y;
   if (portal->direction != portal->exit->direction) {
@@ -194,16 +193,36 @@ static void teleport(struct portal_t *portal) {
   }
 }
 
+bool checkPortalCollision(unsigned int x, uint8_t y, uint8_t width, uint8_t height) {
+  if (playerX + 8 > x && playerX < x + width) {
+    if (playerYVelocity >= 0 && playerY + 8 >= y && playerY + 7 - playerYVelocity - playerQuicksand * playerYVelocity * 1.5 < y) {
+      return true;
+    } else if (playerYVelocity < 0 && playerY <= y + height && playerY + 1 - playerYVelocity - playerQuicksand * playerYVelocity * 1.5 > y + height) {
+      return true;
+    }
+  }
+  // the collisions for the sides
+  if (playerY + 8 > y && playerY < y + height) {
+    if (playerXVelocity >= 0 && playerX + 8 >= x && playerX + 7 - playerXVelocity < x) {
+      return true;
+    } else if (playerXVelocity < 0 && playerX <= x + width && playerX - playerXVelocity + 1 > x + width) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 void portal(struct portal_t *portal) {
   gfx_SetColor(portal->color);
   if (portal->direction > PORTAL_DOWN) {
     gfx_FillEllipse_NoClip(portal->x, portal->y, 4, 19);
-    if (portal->exit != NULL && gfx_CheckRectangleHotspot(portal->x - 3, portal->y - 18, 6, 36, playerX, playerY, 8, 8)) {
+    if (portal->exit != NULL && checkPortalCollision(portal->x - 3, portal->y - 18, 6, 36)) {
       teleport(portal);
     }
   } else {
     gfx_FillEllipse_NoClip(portal->x, portal->y, 19, 4);
-    if (portal->exit != NULL && gfx_CheckRectangleHotspot(portal->x - 18, portal->y - 3, 36, 6, playerX, playerY, 8, 8)) {
+    if (portal->exit != NULL && checkPortalCollision(portal->x - 18, portal->y - 3, 36, 6)) {
       teleport(portal);
     }
   }
@@ -219,14 +238,24 @@ void player(void) {
   toString(timer * .0333251953, 2);
   kb_Scan();
   if (kb_Data[7] & kb_Right) {                        // if the right key is pressed, then
-    playerXVelocity += .75;
-    if (playerXVelocity > 3) {
-      playerXVelocity = 3;   // increase the XVelocity unless the player is going the max speed of 3.
+    if (playerXVelocity < 3) {
+      if (playerXVelocity + .75 > 3) { // increase the XVelocity unless the player is going the max speed of 3.
+        playerXVelocity = 3;
+      } else {
+        playerXVelocity += .75;
+      }
+    } else if (playerGrounded == 3 && playerXVelocity > 3) {
+      playerXVelocity -= 1;
     }
   } else if (kb_Data[7] & kb_Left) {                  // (same for if the left key is pressed, but in the opposite direction)
-    playerXVelocity -= .75;
-    if (playerXVelocity < -3) {
-      playerXVelocity = -3;
+    if (playerXVelocity > -3) {
+      if (playerXVelocity - .75 < -3) {
+        playerXVelocity = -3;
+      } else {
+        playerXVelocity -= .75;
+      }
+    } else if (playerGrounded == 3 && playerXVelocity < -3) {
+      playerXVelocity += 1;
     }
   } else {
     if (fabsf(playerXVelocity) < .75) {
@@ -372,8 +401,8 @@ void deadScreen(void) {
         PrintCenteredText("noobs (get pwned!)", 92, COLOR_WHITE);
         break;
       default:
-        PrintCenteredText("More dark humor.", 70, 51);
-        PrintCenteredText("A real nugget!", 92, 51);
+        PrintCenteredText("More dark humor.", 70, COLOR_DARK_RED);
+        PrintCenteredText("A real nugget!", 92, COLOR_DARK_RED);
         msleep(500);
         break;
     }
@@ -385,6 +414,7 @@ void deadScreen(void) {
   goal = false;
   if (!speedrunnerMode) {
     timer = 0;
+    portalTimer = 0;
   }
 }
 

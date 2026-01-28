@@ -29,6 +29,8 @@ enum {
     COLOR_LIGHT_GRAY,
     COLOR_GOLD,
     COLOR_BLUE,
+    COLOR_DARK_RED,
+    COLOR_LIGHT_BLUE,
     COLOR_WHITE = 255,
 };
 
@@ -47,6 +49,7 @@ extern bool speedrunnerMode;
 
 // the game runs at 30.00732601 frames a second, or .0333251953 seconds per frame
 extern unsigned int timer;
+extern unsigned int portalTimer;
 
 extern char strTemp[10];
 extern uint8_t prevDeathMsg;
