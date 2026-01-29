@@ -6,6 +6,7 @@ NAME = TNYJMPR2
 ICON = icon.png
 DESCRIPTION = "Sequel to the classic Tiny Jumper"
 COMPRESSED = YES
+COMPRESSED_MODE = zx0
 ARCHIVED = YES
 
 CFLAGS = -Wall -Wextra -Oz
@@ -27,6 +28,3 @@ $(FONT_INC): $(FONT)
 	$(Q)$(call MKDIR,$(@D))
 	$(Q)convfont -o carray -f $< -a 1 -b 1 -w bold -c 2 -x 9 -l 0x0B -Z $@
 
-final:
-	make
-	convbin -r -e zx0 -k 8xp-compressed -u -n $(NAME) -i bin/$(NAME).bin -o bin/$(NAME).8xp
