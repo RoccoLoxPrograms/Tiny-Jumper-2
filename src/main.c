@@ -96,9 +96,12 @@ static void menu(void) {
   gfx_SetTextBGColor(COLOR_DARK_PURPLE);
   gfx_SetTextTransparentColor(5);
   gfx_PrintStringXY("Press [mode] for options", 77, 47);
-  ///////////////////////golds = 15;
+  // golds = 15; // for testing
   if (golds > 14) {
     gfx_PrintStringXY("BONUS LEVEL!", 118, 227);
+  }
+  if (tinyJumperData[15] <= goldTimes[15] && tinyJumperData[15] != 0) {
+    golds++;
   }
   gfx_SetColor(COLOR_OLIVE);
   gfx_FillRectangle_NoClip(0, 0, 320, 40);

@@ -37,13 +37,14 @@ static void settingsSwitch(unsigned int x, uint8_t y, bool turnedOn) {
 }
 
 static void confirmReset(void) {
-  gfx_Rectangle_NoClip(211, 189, 19, 11);
   bool keyPressed = false;
   int selectorX = 211;
   uint8_t selectorWidth = 19;
   gfx_SetColor(COLOR_DARK_PURPLE);
   gfx_Rectangle_NoClip(198, 178, 82, 11);
   gfx_PrintStringXY("NO     YES", 213, 191);
+  gfx_SetColor(COLOR_OLIVE);
+  gfx_Rectangle_NoClip(211, 189, 19, 11);
   while (kb_AnyKey());
   while (!kb_IsDown(kb_KeyClear) && !kb_IsDown(kb_KeyEnter) && !kb_IsDown(kb_Key2nd)) {
     kb_Scan();
@@ -149,7 +150,7 @@ static void customizePlayer(void) {
                 width = 18;
                 height = 18;
               } else {
-                playerColor = 21;
+                playerColor = COLOR_OLIVE;
                 cursorX = 16;
                 cursorY = 84;
                 width = 8;
@@ -167,7 +168,7 @@ static void customizePlayer(void) {
           cursorX += 18;
           if (cursorX > 107) {
             if (golds < 15) {
-              playerColor = 21;
+              playerColor = COLOR_OLIVE;
               cursorX = 16;
               cursorY = 84;
               width = 8;
@@ -181,7 +182,7 @@ static void customizePlayer(void) {
             }
           }
         } else if (cursorY == 197) {
-          playerColor = 21;
+          playerColor = COLOR_OLIVE;
           cursorX = 16;
           cursorY = 84;
           width = 8;
@@ -193,7 +194,7 @@ static void customizePlayer(void) {
           cursorX -= 8;
           if (cursorX < 16) {
             if (cursorY == 91) {
-              playerColor = 21;
+              playerColor = COLOR_OLIVE;
               cursorX = 16;
               cursorY -= 7;
             } else {
@@ -239,7 +240,7 @@ static void customizePlayer(void) {
       if (kb_IsDown(kb_KeyDown)) {
         if (cursorY < 154 && cursorY > 83) {
           playerColor += 16;
-          if (playerColor == 37) playerColor = 96;
+          if (playerColor == COLOR_OLIVE + 16) playerColor = 96;
           cursorY += 7;
         } else if (cursorY == 154) {
           if (golds > 9) {
@@ -249,7 +250,7 @@ static void customizePlayer(void) {
             width = 18;
             height = 18;
           } else {
-            playerColor = 21;
+            playerColor = COLOR_OLIVE;
             cursorX = 16;
             cursorY = 84;
           }
@@ -261,14 +262,14 @@ static void customizePlayer(void) {
             width = 98;
             height = 12;
           } else {
-            playerColor = 21;
+            playerColor = COLOR_OLIVE;
             cursorX = 16;
             cursorY = 84;
             width = 8;
             height = 7;
           }
         } else if (cursorY == 197) {
-          playerColor = 21;
+          playerColor = COLOR_OLIVE;
           cursorX = 16;
           cursorY = 84;
           width = 8;
@@ -279,7 +280,7 @@ static void customizePlayer(void) {
           playerColor -= 16;
           cursorY -= 7;
         } else if (cursorY == 91) {
-          playerColor = 21;
+          playerColor = COLOR_OLIVE;
           cursorX = 16;
           cursorY = 84;
         } else if (cursorY == 84) {
