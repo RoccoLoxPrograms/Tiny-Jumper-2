@@ -1,8 +1,9 @@
-    assume adl=1
+    .assume adl=1
 
-    section .text
+    .global _invertPalette
+    .type   _invertPalette, @function
 
-    public _invertPalette
+    .section .text
 
 _invertPalette:
     ld hl, $E30200 ; memory address of the palette
