@@ -821,7 +821,7 @@ void level14(void) {
   bool button = false;
   unsigned int lavaWidth = 6;
   uint8_t platformY[4] = {168, 117, 110, 132};
-  int8_t platformYSpeed[4] = {-1, 1, -1, -2};
+  int8_t platformYSpeed[4] = {-1, 1, -1, 1};
   levelSetup(35, 41);
   gfx_FillRectangle_NoClip(0, 0, 320, 5);
   gfx_FillRectangle_NoClip(0, 5, 6, 44);
